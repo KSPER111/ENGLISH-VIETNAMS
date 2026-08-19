@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolyglotMaster - Nauka Języków</title>
+    <title>PolyglotMaster Pro - Nauka Angielskiego i Wietnamskiego</title>
     <style>
         :root {
             --primary: #6366f1;
@@ -32,7 +32,7 @@
             flex-direction: column;
         }
 
-        /* Top Navigation */
+        /* Nav */
         nav {
             background-color: var(--card-dark);
             border-bottom: 1px solid var(--border-dark);
@@ -53,7 +53,7 @@
 
         .stats-container {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             font-weight: 600;
         }
 
@@ -67,7 +67,7 @@
             gap: 6px;
         }
 
-        /* Layout Container */
+        /* Container */
         .main-container {
             max-width: 900px;
             margin: 30px auto;
@@ -87,10 +87,7 @@
 
         .hidden { display: none !important; }
 
-        /* Typography & Buttons */
-        h1, h2, h3 { margin-bottom: 15px; }
-        p { color: var(--text-sub); line-height: 1.6; }
-
+        /* Buttons */
         .btn {
             background: var(--primary);
             color: white;
@@ -144,12 +141,6 @@
             transform: translateY(-3px);
         }
 
-        .select-box img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
-        }
-
         /* Progress Bar */
         .progress-bar-container {
             width: 100%;
@@ -157,7 +148,7 @@
             background: var(--border-dark);
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .progress-bar-fill {
@@ -167,15 +158,10 @@
             transition: width 0.3s ease;
         }
 
-        /* Flashcard Component */
-        .flashcard-wrapper {
-            perspective: 1000px;
-            margin: 20px 0;
-        }
-
+        /* Flashcard */
         .flashcard {
             width: 100%;
-            height: 250px;
+            min-height: 220px;
             background: #0f172a;
             border: 2px solid var(--border-dark);
             border-radius: 20px;
@@ -186,7 +172,6 @@
             text-align: center;
             padding: 20px;
             cursor: pointer;
-            position: relative;
         }
 
         .flashcard .word {
@@ -205,10 +190,9 @@
         .flashcard .example {
             font-style: italic;
             color: var(--text-sub);
-            font-size: 0.95rem;
         }
 
-        /* Options Grid for Quiz */
+        /* Options Grid */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -236,15 +220,14 @@
 
         .option-btn.correct {
             border-color: var(--secondary);
-            background: rgba(16, 185, 129, 0.15);
+            background: rgba(16, 185, 129, 0.2);
         }
 
         .option-btn.wrong {
             border-color: var(--danger);
-            background: rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.2);
         }
 
-        /* Input mode */
         .input-box {
             width: 100%;
             padding: 16px;
@@ -257,267 +240,244 @@
             outline: none;
         }
 
-        .input-box:focus {
-            border-color: var(--primary);
-        }
-
-        /* Dashboard Stats */
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .dash-card {
+        /* Progress Card Box */
+        .lang-progress-box {
             background: #0f172a;
-            padding: 20px;
-            border-radius: 14px;
             border: 1px solid var(--border-dark);
-            text-align: center;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
         }
 
-        .dash-card .val {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
+        .lang-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .switch-btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV BAR -->
     <nav>
-        <div class="logo">
-            <span>🌐</span> PolyglotSpeak
-        </div>
+        <div class="logo">🌐 PolyglotMaster</div>
         <div class="stats-container">
-            <div class="stat-badge">🔥 <span id="user-streak">0</span> dni</div>
             <div class="stat-badge">⚡ <span id="user-xp">0</span> XP</div>
         </div>
     </nav>
 
-    <!-- MAIN APP CONTAINER -->
     <div class="main-container">
 
-        <!-- SETUP STEP 1: LANGUAGE -->
+        <!-- KROK 1: Wybór języka -->
         <div id="step-lang" class="card">
-            <h2>Wybierz język, którego chcesz się uczyć</h2>
-            <p>Wszystkie lekcje posiadają tłumaczenie na język polski oraz audio.</p>
+            <h2>Wybierz język początkowy</h2>
+            <p>Możesz go łatwo zmienić w dowolnym momencie w panelu głównym.</p>
             <div class="grid-selector">
                 <div class="select-box" onclick="app.setLanguage('en')">
                     <div style="font-size: 40px;">🇬🇧</div>
                     <h3>Angielski</h3>
-                    <p>English for Polish speakers</p>
                 </div>
                 <div class="select-box" onclick="app.setLanguage('vi')">
                     <div style="font-size: 40px;">🇻🇳</div>
                     <h3>Wietnamski</h3>
-                    <p>Tiếng Việt dla Polaków</p>
                 </div>
             </div>
         </div>
 
-        <!-- SETUP STEP 2: LEVEL -->
+        <!-- KROK 2: Wybór poziomu -->
         <div id="step-level" class="card hidden">
-            <button class="btn btn-outline" style="margin-bottom:15px;" onclick="app.showStep('step-lang')">← Zmień język</button>
-            <h2>Jaki jest Twój poziom zaawansowania?</h2>
-            <p>System dostosuje algorytm powtórek do Twojej wiedzy.</p>
+            <button class="btn btn-outline" style="margin-bottom:15px;" onclick="app.showStep('step-lang')">← Wróć</button>
+            <h2>Wybierz poziom trudności</h2>
             <div class="grid-selector">
                 <div class="select-box" onclick="app.setLevel('a1')">
                     <h3>🌱 Początkujący (A1)</h3>
-                    <p>Zero znajomości lub pojedyncze słowa.</p>
                 </div>
                 <div class="select-box" onclick="app.setLevel('a2')">
                     <h3>🌿 Średniozaawansowany (A2)</h3>
-                    <p>Znasz podstawowe zwroty i prostą gramatykę.</p>
                 </div>
                 <div class="select-box" onclick="app.setLevel('b1')">
-                    <h3>🌳 Zaawansowany (B1/B2)</h3>
-                    <p>Swobodna komunikacja i trudniejsze frazy.</p>
+                    <h3>🌳 Zaawansowany (B1)</h3>
                 </div>
             </div>
         </div>
 
-        <!-- MAIN DASHBOARD -->
+        <!-- DASHBOARD ZE STATYSTYKAMI POSTĘPU (%) -->
         <div id="step-dash" class="card hidden">
-            <h2 id="dash-title">Twój Panel Nauki</h2>
-            <p id="dash-subtitle" style="margin-bottom: 20px;"></p>
+            <h2 id="dash-title">Panel Główny Nauki</h2>
+            <p style="margin-bottom: 25px; color: var(--text-sub);">Oto Twój całkowity postęp w nauce obydwu języków:</p>
 
-            <div class="dash-grid">
-                <div class="dash-card">
-                    <div class="val" id="dash-words-count">0</div>
-                    <div>Opanowane słowa</div>
+            <!-- POSTĘP ANGIELSKI -->
+            <div class="lang-progress-box">
+                <div class="lang-progress-header">
+                    <span>🇬🇧 Angielski</span>
+                    <span id="en-pct-text" style="color: var(--secondary);">0%</span>
                 </div>
-                <div class="dash-card">
-                    <div class="val" id="dash-level">1</div>
-                    <div>Poziom profilu</div>
+                <div class="progress-bar-container" style="margin-bottom: 10px;">
+                    <div id="en-pct-bar" class="progress-bar-fill"></div>
                 </div>
-                <div class="dash-card">
-                    <div class="val" id="dash-retention">100%</div>
-                    <div>Pamięć długotrwała</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <small style="color: var(--text-sub);" id="en-count-text">0 / 0 opanowanych słów</small>
+                    <button class="btn switch-btn" onclick="app.switchLanguage('en')">Przełącz na Angielski</button>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <button class="btn" style="flex: 2;" onclick="app.startSession('learn')">🚀 Rozpocznij Lekcję</button>
-                <button class="btn btn-outline" style="flex: 1;" onclick="app.startSession('review')">🔄 Inteligentna Powtórka</button>
-                <button class="btn btn-outline" onclick="app.showStep('step-lang')">⚙️ Ustawienia</button>
+            <!-- POSTĘP WIETNAMSKI -->
+            <div class="lang-progress-box">
+                <div class="lang-progress-header">
+                    <span>🇻🇳 Wietnamski</span>
+                    <span id="vi-pct-text" style="color: var(--secondary);">0%</span>
+                </div>
+                <div class="progress-bar-container" style="margin-bottom: 10px;">
+                    <div id="vi-pct-bar" class="progress-bar-fill"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <small style="color: var(--text-sub);" id="vi-count-text">0 / 0 opanowanych słów</small>
+                    <button class="btn switch-btn" onclick="app.switchLanguage('vi')">Przełącz na Wietnamski</button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button class="btn" style="flex: 1;" onclick="app.startSession()">🚀 Rozpocznij Lekcję (<span id="current-lang-name">Angielski</span>)</button>
+                <button class="btn btn-outline" onclick="app.showStep('step-level')">⚙️ Zmień Poziom</button>
             </div>
         </div>
 
-        <!-- ACTIVE LESSON SCREEN -->
+        <!-- EKRAN LEKCJI -->
         <div id="step-lesson" class="card hidden">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <button class="btn btn-outline" style="padding: 5px 12px;" onclick="app.exitLesson()">✕ Wyjdź</button>
-                <span id="lesson-type-tag" style="color: var(--primary); font-weight: bold;">Karta Słowa</span>
+                <span id="lesson-type-tag" style="color: var(--primary); font-weight: bold;">Lekcja</span>
             </div>
 
             <div class="progress-bar-container">
                 <div id="lesson-progress" class="progress-bar-fill"></div>
             </div>
 
-            <!-- MODE 1: FLASHCARD LEARN -->
+            <!-- FISZKA -->
             <div id="mode-flashcard" class="hidden">
                 <div class="flashcard" onclick="app.toggleCardFlip()">
                     <div class="word" id="fc-word">Word</div>
                     <div class="phonetic" id="fc-phonetic">/phonetic/</div>
-                    <div class="example" id="fc-example">"Example sentence goes here"</div>
+                    <div class="example" id="fc-example">"Example"</div>
                     <p id="fc-trans" class="hidden" style="margin-top: 15px; color: var(--secondary); font-weight: bold; font-size: 1.3rem;"></p>
                 </div>
-                <p style="text-align: center; margin-top: 10px; font-size: 0.85rem;">Kliknij kartę, aby zobaczyć tłumaczenie</p>
                 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Posłuchaj</button>
-                    <button class="btn" onclick="app.nextCard()">Pamiętam →</button>
+                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Odtwórz</button>
+                    <button class="btn" onclick="app.advanceLesson()">Pamiętam →</button>
                 </div>
             </div>
 
-            <!-- MODE 2: MULTIPLE CHOICE QUIZ -->
+            <!-- QUIZ 4 OPCJE (NAPRAWIONY PRZYCISK KONTYNUUJ) -->
             <div id="mode-quiz" class="hidden">
-                <h3 id="quiz-prompt">Wybierz poprawne tłumaczenie:</h3>
+                <h3>Wybierz poprawne tłumaczenie:</h3>
                 <div style="font-size: 1.8rem; font-weight: bold; margin: 15px 0;" id="quiz-target-word">Target</div>
                 <div class="options-grid" id="quiz-options-box"></div>
-                <button id="quiz-next-btn" class="btn hidden" style="width: 100%; margin-top: 20px;" onclick="app.nextQuestion()">Kontynuuj</button>
+                <button id="quiz-next-btn" class="btn hidden" style="width: 100%; margin-top: 20px;" onclick="app.advanceLesson()">Kontynuuj →</button>
             </div>
 
-            <!-- MODE 3: TYPING / SPELLING -->
+            <!-- WPISYWANIE SŁOWA -->
             <div id="mode-typing" class="hidden">
-                <h3>Przetłumacz na język docelowy:</h3>
-                <p style="font-size: 1.4rem; font-weight: bold; color: var(--text-main); margin-top: 10px;" id="type-prompt-word">Słowo po polsku</p>
-                <input type="text" id="type-input" class="input-box" placeholder="Wpisz odpowiedź..." autocomplete="off">
+                <h3>Przetłumacz słowo:</h3>
+                <p style="font-size: 1.4rem; font-weight: bold; margin-top: 10px;" id="type-prompt-word">Polski</p>
+                <input type="text" id="type-input" class="input-box" placeholder="Wpisz po angielsku / wietnamsku..." autocomplete="off">
                 <div id="type-feedback" style="margin-top: 15px; font-weight: bold;"></div>
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Odtwórz Audio</button>
+                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Odtwórz</button>
                     <button class="btn" style="flex: 1;" onclick="app.checkTypingAnswer()">Sprawdź</button>
                 </div>
             </div>
 
         </div>
 
-        <!-- SUMMARY SCREEN -->
+        <!-- PODSUMOWANIE -->
         <div id="step-summary" class="card hidden" style="text-align: center;">
             <h2>🎉 Lekcja Zakończona!</h2>
-            <p>Świetna robota. Twoja pamięć długotrwała ulega wzmocnieniu.</p>
-            
+            <p>Twoje postępy w nauce zostały zapisane.</p>
             <div style="margin: 30px 0;">
                 <div style="font-size: 3rem; font-weight: 800; color: var(--secondary);" id="summary-xp">+50 XP</div>
-                <p>Zdobytych punktów doświadczenia</p>
             </div>
-
-            <button class="btn" onclick="app.showStep('step-dash')">Powrót do panelu głównego</button>
+            <button class="btn" onclick="app.showStep('step-dash')">Wróć do Panelu</button>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT ENGINE -->
     <script>
-        // EXPANSIVE DATABASE (Easily expandable)
+        // BAZA SŁÓWEK
         const DATABASE = {
             en: {
                 a1: [
-                    { id: "e1", word: "Hello", trans: "Cześć / Dzień dobry", phonetic: "/həˈləʊ/", example: "Hello, how are you today?" },
-                    { id: "e2", word: "Thank you", trans: "Dziękuję", phonetic: "/θæŋk juː/", example: "Thank you for your help." },
-                    { id: "e3", word: "Water", trans: "Woda", phonetic: "/ˈwɔːtər/", example: "I need a glass of water." },
-                    { id: "e4", word: "Bread", trans: "Chleb", phonetic: "/bred/", example: "Fresh bread smells amazing." },
-                    { id: "e5", word: "Friend", trans: "Przyjaciel", phonetic: "/frend/", example: "He is my best friend." },
-                    { id: "e6", word: "House", trans: "Dom", phonetic: "/haʊs/", example: "Their house is very big." },
-                    { id: "e7", word: "Family", trans: "Rodzina", phonetic: "/ˈfæməli/", example: "I love my family." },
-                    { id: "e8", word: "To learn", trans: "Uczyć się", phonetic: "/lɜːn/", example: "I want to learn English." }
+                    { id: "e1", word: "Hello", trans: "Cześć / Dzień dobry", phonetic: "/həˈləʊ/", example: "Hello, how are you?" },
+                    { id: "e2", word: "Thank you", trans: "Dziękuję", phonetic: "/θæŋk juː/", example: "Thank you very much." },
+                    { id: "e3", word: "Water", trans: "Woda", phonetic: "/ˈwɔːtər/", example: "I drink water." },
+                    { id: "e4", word: "Bread", trans: "Chleb", phonetic: "/bred/", example: "Fresh bread." },
+                    { id: "e5", word: "Friend", trans: "Przyjaciel", phonetic: "/frend/", example: "He is my friend." }
                 ],
                 a2: [
-                    { id: "e20", word: "Airport", trans: "Lotnisko", phonetic: "/ˈeəpɔːt/", example: "We need to go to the airport." },
-                    { id: "e21", word: "To recommend", trans: "Polecać", phonetic: "/ˌrekəˈmend/", example: "Can you recommend a good restaurant?" },
-                    { id: "e22", word: "Expensive", trans: "Drogi (o cenie)", phonetic: "/ɪkˈspensɪv/", example: "This watch is too expensive." },
-                    { id: "e23", word: "Appointment", trans: "Wizyta / Spotkanie", phonetic: "/əˈpɔɪntmənt/", example: "I have a doctor appointment." },
-                    { id: "e24", word: "To decide", trans: "Decydować", phonetic: "/dɪˈsaɪd/", example: "It's difficult to decide." }
+                    { id: "e20", word: "Airport", trans: "Lotnisko", phonetic: "/ˈeəpɔːt/", example: "Go to the airport." },
+                    { id: "e21", word: "Expensive", trans: "Drogi", phonetic: "/ɪkˈspensɪv/", example: "It is expensive." }
                 ],
                 b1: [
-                    { id: "e40", word: "To accomplish", trans: "Osiągnąć / Zrealizować", phonetic: "/əˈkʌmplɪʃ/", example: "We accomplished our goals." },
-                    { id: "e41", word: "Inevitable", trans: "Nieunikniony", phonetic: "/ɪnˈevɪtəbl/", example: "Change is inevitable in life." },
-                    { id: "e42", word: "To exaggerate", trans: "Przesadzać", phonetic: "/ɪɡˈzædʒəreɪt/", example: "Don't exaggerate the problem." }
+                    { id: "e40", word: "Accomplish", trans: "Osiągnąć", phonetic: "/əˈkʌmplɪʃ/", example: "Accomplish the goal." }
                 ]
             },
             vi: {
                 a1: [
-                    { id: "v1", word: "Xin chào", trans: "Cześć / Dzień dobry", phonetic: "[sin chow]", example: "Xin chào, bạn khỏe không?" },
-                    { id: "v2", word: "Cảm ơn", trans: "Dziękuję", phonetic: "[kam uhn]", example: "Cảm ơn bạn rất nhiều." },
-                    { id: "v3", word: "Nước", trans: "Woda / Kraj", phonetic: "[nu-uhk]", example: "Cho tôi xin nước." },
-                    { id: "v4", word: "Phở", trans: "Zupa Pho (tradycyjna)", phonetic: "[fuh]", example: "Tôi muốn ăn phở bò." },
-                    { id: "v5", word: "Tạm biệt", trans: "Do widzenia", phonetic: "[tam byet]", example: "Tạm biệt, gặp lại sau!" },
-                    { id: "v6", word: "Ngon", trans: "Smaczne", phonetic: "[ngon]", example: "Món ăn này rất ngon." },
-                    { id: "v7", word: "Bao nhiêu", trans: "Ile (o cenę)", phonetic: "[bow nyew]", example: "Cái này bao nhiêu tiền?" }
+                    { id: "v1", word: "Xin chào", trans: "Cześć / Dzień dobry", phonetic: "[sin chow]", example: "Xin chào bạn!" },
+                    { id: "v2", word: "Cảm ơn", trans: "Dziękuję", phonetic: "[kam uhn]", example: "Cảm ơn nhiều." },
+                    { id: "v3", word: "Nước", trans: "Woda", phonetic: "[nu-uhk]", example: "Uống nước." },
+                    { id: "v4", word: "Ngon", trans: "Smaczne", phonetic: "[ngon]", example: "Rất ngon!" },
+                    { id: "v5", word: "Tạm biệt", trans: "Do widzenia", phonetic: "[tam byet]", example: "Tạm biệt nhé!" }
                 ],
                 a2: [
-                    { id: "v20", word: "Tính tiền", trans: "Proszę o rachunek", phonetic: "[tinh tyen]", example: "Em ơi, tính tiền!" },
-                    { id: "v21", word: "Khách sạn", trans: "Hotel", phonetic: "[khak san]", example: "Khách sạn này ở đâu?" },
-                    { id: "v22", word: "Sân bay", trans: "Lotnisko", phonetic: "[sun bay]", example: "Tôi đi đến sân bay." }
+                    { id: "v20", word: "Tính tiền", trans: "Proszę o rachunek", phonetic: "[tinh tyen]", example: "Em ơi tính tiền." }
                 ],
                 b1: [
-                    { id: "v40", word: "Kinh nghiệm", trans: "Doświadczenie", phonetic: "[kin ngyem]", example: "Tôi có nhiều kinh nghiệm." },
-                    { id: "v41", word: "Thành công", trans: "Sukces", phonetic: "[thanh kong]", example: "Chúc bạn thành công!" }
+                    { id: "v40", word: "Thành công", trans: "Sukces", phonetic: "[thanh kong]", example: "Chúc thành công!" }
                 ]
             }
         };
 
-        // APPLICATION ENGINE & STATE MANAGEMENT
         class LanguageApp {
             constructor() {
                 this.state = {
                     lang: 'en',
                     level: 'a1',
                     xp: 0,
-                    streak: 1,
-                    wordsLearned: [],
-                    lastActiveDate: new Date().toDateString()
+                    wordsLearned: { en: [], vi: [] }
                 };
 
                 this.session = {
                     queue: [],
                     currentIndex: 0,
-                    type: 'learn', // learn / review
-                    currentMode: 'flashcard' // flashcard / quiz / typing
+                    currentMode: ''
                 };
 
                 this.loadUserData();
                 this.updateUI();
             }
 
-            // PERSISTENCE (LocalStorage)
             saveUserData() {
-                localStorage.setItem('polyglot_user_data', JSON.stringify(this.state));
+                localStorage.setItem('polyglot_v2_data', JSON.stringify(this.state));
             }
 
             loadUserData() {
-                const saved = localStorage.getItem('polyglot_user_data');
+                const saved = localStorage.getItem('polyglot_v2_data');
                 if (saved) {
-                    this.state = { ...this.state, ...JSON.parse(saved) };
+                    const parsed = JSON.parse(saved);
+                    this.state = { ...this.state, ...parsed };
+                    if (!this.state.wordsLearned.en) this.state.wordsLearned = { en: [], vi: [] };
                 }
             }
 
-            // UI ROUTER
             showStep(stepId) {
-                const steps = ['step-lang', 'step-level', 'step-dash', 'step-lesson', 'step-summary'];
-                steps.forEach(s => {
+                ['step-lang', 'step-level', 'step-dash', 'step-lesson', 'step-summary'].forEach(s => {
                     document.getElementById(s).classList.add('hidden');
                 });
                 document.getElementById(stepId).classList.remove('hidden');
@@ -530,30 +490,51 @@
                 this.showStep('step-level');
             }
 
+            switchLanguage(lang) {
+                this.state.lang = lang;
+                this.saveUserData();
+                this.updateUI();
+            }
+
             setLevel(level) {
                 this.state.level = level;
                 this.saveUserData();
                 this.showStep('step-dash');
             }
 
-            updateUI() {
-                document.getElementById('user-xp').innerText = this.state.xp;
-                document.getElementById('user-streak').innerText = this.state.streak;
-                
-                // Dashboard updates
-                const langName = this.state.lang === 'en' ? 'Angielskiego' : 'Wietnamskiego';
-                document.getElementById('dash-title').innerText = `Nauka Języka ${langName}`;
-                document.getElementById('dash-subtitle').innerText = `Poziom: ${this.state.level.toUpperCase()}`;
-                document.getElementById('dash-words-count').innerText = this.state.wordsLearned.length;
-                document.getElementById('dash-level').innerText = Math.floor(this.state.xp / 100) + 1;
+            // OBLICZANIE POSTĘPU %
+            getTotalWords(lang) {
+                let total = 0;
+                Object.keys(DATABASE[lang]).forEach(lvl => {
+                    total += DATABASE[lang][lvl].length;
+                });
+                return total;
             }
 
-            // LESSON LOGIC
-            startSession(type) {
-                this.session.type = type;
+            updateUI() {
+                document.getElementById('user-xp').innerText = this.state.xp;
+
+                // Statystyki Angielski
+                const enTotal = this.getTotalWords('en');
+                const enLearned = this.state.wordsLearned.en.length;
+                const enPct = enTotal > 0 ? Math.round((enLearned / enTotal) * 100) : 0;
+                document.getElementById('en-pct-text').innerText = `${enPct}%`;
+                document.getElementById('en-pct-bar').style.width = `${enPct}%`;
+                document.getElementById('en-count-text').innerText = `${enLearned} / ${enTotal} opanowanych słów`;
+
+                // Statystyki Wietnamski
+                const viTotal = this.getTotalWords('vi');
+                const viLearned = this.state.wordsLearned.vi.length;
+                const viPct = viTotal > 0 ? Math.round((viLearned / viTotal) * 100) : 0;
+                document.getElementById('vi-pct-text').innerText = `${viPct}%`;
+                document.getElementById('vi-pct-bar').style.width = `${viPct}%`;
+                document.getElementById('vi-count-text').innerText = `${viLearned} / ${viTotal} opanowanych słów`;
+
+                document.getElementById('current-lang-name').innerText = this.state.lang === 'en' ? 'Angielski' : 'Wietnamski';
+            }
+
+            startSession() {
                 const pool = DATABASE[this.state.lang][this.state.level] || [];
-                
-                // Clone & Shuffle pool
                 this.session.queue = [...pool].sort(() => Math.random() - 0.5);
                 this.session.currentIndex = 0;
 
@@ -569,30 +550,24 @@
             renderCurrentQuestion() {
                 const current = this.session.queue[this.session.currentIndex];
                 const total = this.session.queue.length;
-                const progressPct = ((this.session.currentIndex) / total) * 100;
+                const progressPct = (this.session.currentIndex / total) * 100;
                 document.getElementById('lesson-progress').style.width = `${progressPct}%`;
 
-                // Hide sub-modes
                 document.getElementById('mode-flashcard').classList.add('hidden');
                 document.getElementById('mode-quiz').classList.add('hidden');
                 document.getElementById('mode-typing').classList.add('hidden');
 
-                // Determine mode dynamically
                 if (this.session.currentIndex % 3 === 0) {
-                    this.session.currentMode = 'flashcard';
                     this.renderFlashcard(current);
                 } else if (this.session.currentIndex % 3 === 1) {
-                    this.session.currentMode = 'quiz';
                     this.renderQuiz(current);
                 } else {
-                    this.session.currentMode = 'typing';
                     this.renderTyping(current);
                 }
             }
 
-            // MODE 1: FLASHCARD
             renderFlashcard(item) {
-                document.getElementById('lesson-type-tag').innerText = "Karta Nauka";
+                document.getElementById('lesson-type-tag').innerText = "Fiszka";
                 document.getElementById('mode-flashcard').classList.remove('hidden');
                 document.getElementById('fc-word').innerText = item.word;
                 document.getElementById('fc-phonetic').innerText = item.phonetic;
@@ -607,13 +582,8 @@
                 document.getElementById('fc-trans').classList.toggle('hidden');
             }
 
-            nextCard() {
-                this.advanceLesson();
-            }
-
-            // MODE 2: QUIZ
             renderQuiz(item) {
-                document.getElementById('lesson-type-tag').innerText = "Wybiórczy Quiz";
+                document.getElementById('lesson-type-tag').innerText = "Quiz Wyboru";
                 document.getElementById('mode-quiz').classList.remove('hidden');
                 document.getElementById('quiz-target-word').innerText = item.word;
                 document.getElementById('quiz-next-btn').classList.add('hidden');
@@ -646,19 +616,19 @@
 
                 if (selected === correct) {
                     btnElement.classList.add('correct');
-                    this.addXP(10);
+                    this.state.xp += 10;
                 } else {
                     btnElement.classList.add('wrong');
                     allBtns.forEach(b => {
                         if (b.innerText === correct) b.classList.add('correct');
                     });
                 }
+                // Pokaż przycisk Kontynuuj
                 document.getElementById('quiz-next-btn').classList.remove('hidden');
             }
 
-            // MODE 3: TYPING
             renderTyping(item) {
-                document.getElementById('lesson-type-tag').innerText = "Pisanie ze słuchu/pamięci";
+                document.getElementById('lesson-type-tag').innerText = "Pisanie z pamięci";
                 document.getElementById('mode-typing').classList.remove('hidden');
                 document.getElementById('type-prompt-word').innerText = item.trans;
                 
@@ -676,21 +646,22 @@
 
                 if (userVal === correctVal) {
                     feedback.style.color = "var(--secondary)";
-                    feedback.innerText = "Świetnie! Idealnie wpisane.";
-                    this.addXP(15);
-                    setTimeout(() => this.advanceLesson(), 1200);
+                    feedback.innerText = "Świetnie!";
+                    this.state.xp += 15;
+                    setTimeout(() => this.advanceLesson(), 1000);
                 } else {
                     feedback.style.color = "var(--danger)";
-                    feedback.innerText = `Błąd. Poprawna pisownia: "${current.word}"`;
-                    setTimeout(() => this.advanceLesson(), 2500);
+                    feedback.innerText = `Poprawne słowo to: "${current.word}"`;
+                    setTimeout(() => this.advanceLesson(), 2000);
                 }
             }
 
             advanceLesson() {
-                // Register word as learned
                 const current = this.session.queue[this.session.currentIndex];
-                if (!this.state.wordsLearned.includes(current.id)) {
-                    this.state.wordsLearned.push(current.id);
+                const currentLang = this.state.lang;
+
+                if (!this.state.wordsLearned[currentLang].includes(current.id)) {
+                    this.state.wordsLearned[currentLang].push(current.id);
                 }
 
                 this.session.currentIndex++;
@@ -709,32 +680,21 @@
             }
 
             exitLesson() {
-                if (confirm("Czy na pewno chcesz przerwać lekcję? Postępy nie zostaną zapisane.")) {
+                if (confirm("Chcesz przerwać lekcję?")) {
                     this.showStep('step-dash');
                 }
             }
 
-            addXP(amount) {
-                this.state.xp += amount;
-                this.saveUserData();
-                this.updateUI();
-            }
-
-            // TEXT TO SPEECH (Audio System)
             speakCurrentWord() {
                 const current = this.session.queue[this.session.currentIndex];
                 if (!current) return;
-
                 const utterance = new SpeechSynthesisUtterance(current.word);
                 utterance.lang = this.state.lang === 'en' ? 'en-US' : 'vi-VN';
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        // INITIALIZE APP
         const app = new LanguageApp();
-
-        // Auto-show correct initial screen
         if (app.state.lang && app.state.level) {
             app.showStep('step-dash');
         }
