@@ -3,960 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PolyglotMaster Pro v2.0</title>
+    <title>StudyGo Clone - Nauka Słówek</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
             --secondary: #10b981;
-            --secondary-hover: #059669;
-            --accent: #f59e0b;
             --danger: #ef4444;
-            --bg-dark: #090d16;
-            --card-bg: #131c2e;
-            --card-border: #22304a;
-            --text-main: #f8fafc;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
             --text-sub: #94a3b8;
-            --radius-lg: 20px;
-            --radius-md: 14px;
+            --radius: 16px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        /* Nav Header */
-        nav {
-            background-color: rgba(19, 28, 46, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .stats-container {
-            display: flex;
-            gap: 12px;
-        }
-
-        .stat-badge {
-            background: rgba(9, 13, 22, 0.6);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid var(--card-border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        /* Container & Cards */
-        .main-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
+        .app-container { width: 100%; max-width: 650px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
         .hidden { display: none !important; }
 
-        /* Typography */
-        h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
-        p.sub { color: var(--text-sub); margin-bottom: 24px; font-size: 0.95rem; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: #818cf8; }
+        
+        /* Progress */
+        .progress-box { margin-bottom: 20px; }
+        .progress-bar { width: 100%; height: 10px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-top: 8px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.3s ease; }
 
-        /* Buttons */
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
-        }
+        /* Buttons & Inputs */
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; width: 100%; font-size: 1rem; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--border); }
+        .btn-success { background: var(--secondary); }
+        .btn-danger { background: var(--danger); }
+        
+        .input-field { width: 100%; padding: 14px; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: white; font-size: 1.1rem; margin-top: 12px; outline: none; }
+        .input-field:focus { border-color: var(--primary); }
 
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-        }
+        /* Modes Grid */
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+        .mode-card { background: var(--bg); border: 2px solid var(--border); padding: 16px; border-radius: 10px; text-align: center; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .mode-card:hover { border-color: var(--primary); }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--card-border);
-            color: var(--text-main);
-            box-shadow: none;
-        }
+        /* Flashcard 3D */
+        .flashcard-box { perspective: 1000px; height: 200px; margin: 20px 0; cursor: pointer; }
+        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flashcard-box.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); border: 2px solid var(--border); background: var(--bg); display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 800; padding: 20px; }
+        .fc-back { transform: rotateY(180deg); color: var(--secondary); border-color: var(--primary); }
 
-        .btn-outline:hover {
-            background: var(--card-border);
-            transform: translateY(-2px);
-        }
+        /* Quiz Grid */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+        .opt-btn { background: var(--bg); border: 2px solid var(--border); color: white; padding: 14px; border-radius: 10px; font-weight: 600; cursor: pointer; text-align: left; }
+        .opt-btn.correct { border-color: var(--secondary); background: rgba(16, 185, 129, 0.2); }
+        .opt-btn.wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.2); }
 
-        .btn-secondary {
-            background: var(--secondary);
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-        }
+        /* Matching Grid */
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+        .match-card { background: var(--bg); border: 2px solid var(--border); padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer; }
+        .match-card.selected { border-color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
+        .match-card.matched { border-color: var(--secondary); opacity: 0.3; pointer-events: none; }
 
-        .btn-secondary:hover {
-            background: var(--secondary-hover);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-        }
-
-        /* Grid Selectors */
-        .grid-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .select-box {
-            background: rgba(9, 13, 22, 0.5);
-            border: 2px solid var(--card-border);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-
-        .select-box:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .select-box .flag { font-size: 2.8rem; margin-bottom: 12px; }
-
-        /* Progress Bars */
-        .progress-bar-container {
-            width: 100%;
-            height: 10px;
-            background: var(--bg-dark);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--card-border);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            width: 0%;
-            transition: width 0.4s ease;
-            border-radius: 20px;
-        }
-
-        /* Dashboard Items */
-        .lang-progress-card {
-            background: rgba(9, 13, 22, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-
-        .lang-progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* 3D Flashcard */
-        .flashcard-wrapper {
-            perspective: 1000px;
-            width: 100%;
-            height: 260px;
-            margin: 20px 0;
-            cursor: pointer;
-        }
-
-        .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .flashcard-wrapper.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: var(--radius-lg);
-            border: 2px solid var(--card-border);
-            background: rgba(9, 13, 22, 0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .flashcard-back {
-            transform: rotateY(180deg);
-            border-color: var(--primary);
-            background: rgba(19, 28, 46, 0.95);
-        }
-
-        .flashcard .word { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
-        .flashcard .phonetic { font-size: 1rem; color: var(--accent); margin-bottom: 12px; }
-        .flashcard .example { font-style: italic; color: var(--text-sub); font-size: 0.95rem; }
-        .flashcard .trans { font-size: 1.8rem; font-weight: 800; color: var(--secondary); }
-
-        /* Quiz & Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .option-btn {
-            background: rgba(9, 13, 22, 0.6);
-            border: 2px solid var(--card-border);
-            color: var(--text-main);
-            padding: 16px;
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-        }
-
-        .option-btn:hover {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .option-btn.correct {
-            border-color: var(--secondary) !important;
-            background: rgba(16, 185, 129, 0.2) !important;
-            color: #34d399;
-        }
-
-        .option-btn.wrong {
-            border-color: var(--danger) !important;
-            background: rgba(239, 68, 68, 0.2) !important;
-            color: #f87171;
-        }
-
-        .input-box {
-            width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            border: 2px solid var(--card-border);
-            background: rgba(9, 13, 22, 0.8);
-            color: white;
-            font-size: 1.1rem;
-            margin-top: 16px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-box:focus {
-            border-color: var(--primary);
-        }
-
-        /* Matching Game Grid */
-        .match-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .match-card {
-            background: rgba(9, 13, 22, 0.6);
-            border: 2px solid var(--card-border);
-            padding: 14px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .match-card.selected {
-            border-color: var(--accent);
-            background: rgba(245, 158, 11, 0.15);
-        }
-
-        .match-card.matched {
-            border-color: var(--secondary);
-            background: rgba(16, 185, 129, 0.15);
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        @media (max-width: 600px) {
-            .options-grid, .match-grid { grid-template-columns: 1fr; }
-            .main-container { margin: 16px auto; }
-            .card { padding: 20px; }
-        }
+        .feedback { margin-top: 12px; font-weight: 700; text-align: center; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo" onclick="app.showStep('step-dash')">
-            <span>🌐</span> PolyglotMaster
-        </div>
-        <div class="stats-container">
-            <div class="stat-badge">🔥 <span id="user-streak">0</span> d.</div>
-            <div class="stat-badge">⚡ <span id="user-xp">0</span> XP</div>
-        </div>
-    </nav>
-
-    <div class="main-container">
-
-        <!-- KROK 1: Wybór języka -->
-        <div id="step-lang" class="card">
-            <h2>Wybierz język do nauki</h2>
-            <p class="sub">Możesz swobodnie przełączać się między językami w panelu głównym.</p>
-            <div class="grid-selector">
-                <div class="select-box" onclick="app.setLanguage('en')">
-                    <div class="flag">🇬🇧</div>
-                    <h3>Angielski</h3>
-                </div>
-                <div class="select-box" onclick="app.setLanguage('vi')">
-                    <div class="flag">🇻🇳</div>
-                    <h3>Wietnamski</h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- KROK 2: Wybór poziomu -->
-        <div id="step-level" class="card hidden">
-            <button class="btn btn-outline" style="margin-bottom:20px; padding: 8px 16px;" onclick="app.showStep('step-lang')">← Wróć</button>
-            <h2>Wybierz poziom trudności</h2>
-            <p class="sub">Dostosuj bazę słówek do swoich umiejętności.</p>
-            <div class="grid-selector">
-                <div class="select-box" onclick="app.setLevel('a1')">
-                    <div style="font-size:2rem; margin-bottom:8px;">🌱</div>
-                    <h3>Początkujący (A1)</h3>
-                </div>
-                <div class="select-box" onclick="app.setLevel('a2')">
-                    <div style="font-size:2rem; margin-bottom:8px;">🌿</div>
-                    <h3>Średniozaawansowany (A2)</h3>
-                </div>
-                <div class="select-box" onclick="app.setLevel('b1')">
-                    <div style="font-size:2rem; margin-bottom:8px;">🌳</div>
-                    <h3>Zaawansowany (B1)</h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="step-dash" class="card hidden">
-            <h2>Panel Główny</h2>
-            <p class="sub">Mierz swoje postępy i kontynuuj codzienne lekcje.</p>
-
-            <!-- ANGIELSKI -->
-            <div class="lang-progress-card">
-                <div class="lang-progress-header">
-                    <span>🇬🇧 Angielski</span>
-                    <span id="en-pct-text" style="color: var(--secondary);">0%</span>
-                </div>
-                <div class="progress-bar-container" style="margin-bottom: 12px;">
-                    <div id="en-pct-bar" class="progress-bar-fill"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <small style="color: var(--text-sub);" id="en-count-text">0 / 0 opanowanych słów</small>
-                    <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.85rem;" onclick="app.switchLanguage('en')">Wybierz</button>
-                </div>
-            </div>
-
-            <!-- WIETNAMSKI -->
-            <div class="lang-progress-card">
-                <div class="lang-progress-header">
-                    <span>🇻🇳 Wietnamski</span>
-                    <span id="vi-pct-text" style="color: var(--secondary);">0%</span>
-                </div>
-                <div class="progress-bar-container" style="margin-bottom: 12px;">
-                    <div id="vi-pct-bar" class="progress-bar-fill"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <small style="color: var(--text-sub);" id="vi-count-text">0 / 0 opanowanych słów</small>
-                    <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.85rem;" onclick="app.switchLanguage('vi')">Wybierz</button>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
-                <button class="btn" style="flex: 2; min-width: 200px;" onclick="app.startSession()">🚀 Rozpocznij Lekcję (<span id="current-lang-name">Angielski</span>)</button>
-                <button class="btn btn-outline" style="flex: 1;" onclick="app.showStep('step-level')">⚙️ Poziom</button>
-            </div>
-        </div>
-
-        <!-- EKRAN LEKCJI -->
-        <div id="step-lesson" class="card hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.exitLesson()">✕ Przerwij</button>
-                <span id="lesson-type-tag" style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">Lekcja</span>
-            </div>
-
-            <div class="progress-bar-container" style="margin-bottom: 24px;">
-                <div id="lesson-progress" class="progress-bar-fill"></div>
-            </div>
-
-            <!-- MODE 1: FISZKA 3D -->
-            <div id="mode-flashcard" class="hidden">
-                <div class="flashcard-wrapper" id="fc-wrapper" onclick="app.flipCard()">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front flashcard">
-                            <div class="word" id="fc-word">Word</div>
-                            <div class="phonetic" id="fc-phonetic">/phonetic/</div>
-                            <div class="example" id="fc-example">"Example"</div>
-                            <small style="margin-top: 20px; color: var(--text-sub);">💡 Kliknij, aby zobaczyć tłumaczenie</small>
-                        </div>
-                        <div class="flashcard-back flashcard">
-                            <div class="trans" id="fc-trans">Tłumaczenie</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 20px;">
-                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Odtwórz</button>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-danger" onclick="app.answerFlashcard(false)">Jeszcze raz</button>
-                        <button class="btn btn-secondary" onclick="app.answerFlashcard(true)">Pamiętam →</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODE 2: QUIZ WYBORU -->
-            <div id="mode-quiz" class="hidden">
-                <h3 style="font-size: 1.1rem; color: var(--text-sub);">Wybierz poprawne tłumaczenie:</h3>
-                <div style="font-size: 2rem; font-weight: 800; margin: 16px 0;" id="quiz-target-word">Target</div>
-                <div class="options-grid" id="quiz-options-box"></div>
-                <button id="quiz-next-btn" class="btn hidden" style="width: 100%; margin-top: 20px;" onclick="app.advanceLesson()">Kontynuuj →</button>
-            </div>
-
-            <!-- MODE 3: PISANIE Z PAMIĘCI -->
-            <div id="mode-typing" class="hidden">
-                <h3 style="font-size: 1.1rem; color: var(--text-sub);">Przetłumacz na język docelowy:</h3>
-                <p style="font-size: 1.6rem; font-weight: 800; margin-top: 12px;" id="type-prompt-word">Polski</p>
-                <input type="text" id="type-input" class="input-box" placeholder="Wpisz odpowiedź..." autocomplete="off">
-                <div id="type-feedback" style="margin-top: 16px; font-weight: 700;"></div>
-                <div style="display: flex; gap: 12px; margin-top: 20px;">
-                    <button class="btn btn-outline" onclick="app.speakCurrentWord()">🔊 Odtwórz</button>
-                    <button class="btn" style="flex: 1;" onclick="app.checkTypingAnswer()">Sprawdź</button>
-                </div>
-            </div>
-
-            <!-- MODE 4: ŁĄCZENIE PAR -->
-            <div id="mode-matching" class="hidden">
-                <h3 style="font-size: 1.1rem; color: var(--text-sub);">Dopasuj słówka w pary:</h3>
-                <div class="match-grid" id="matching-box"></div>
-            </div>
-
-        </div>
-
-        <!-- PODSUMOWANIE LEKCJI -->
-        <div id="step-summary" class="card hidden" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 12px;">🎉</div>
-            <h2>Lekcja Zakończona!</h2>
-            <p class="sub">Świetna robota, Twoje postępy zostały zapisane.</p>
-            
-            <div style="margin: 24px 0; background: rgba(9, 13, 22, 0.6); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--card-border);">
-                <div style="font-size: 2.5rem; font-weight: 800; color: var(--secondary);" id="summary-xp">+50 XP</div>
-            </div>
-            
-            <button class="btn" style="width: 100%;" onclick="app.showStep('step-dash')">Wróć do Panelu</button>
-        </div>
-
+<div class="app-container">
+    <div class="header">
+        <div class="logo">⚡ StudyGo Master</div>
+        <button id="exit-btn" class="btn btn-outline hidden" style="width: auto; padding: 6px 12px;" onclick="app.showMenu()">Menu</button>
     </div>
 
-    <script>
-        // BAZA DANYCH SŁÓWEK
-        const DATABASE = {
-            en: {
-                a1: [
-                    { id: "e1", word: "Hello", trans: "Cześć", phonetic: "/həˈləʊ/", example: "Hello, how are you?" },
-                    { id: "e2", word: "Thank you", trans: "Dziękuję", phonetic: "/θæŋk juː/", example: "Thank you very much." },
-                    { id: "e3", word: "Water", trans: "Woda", phonetic: "/ˈwɔːtər/", example: "I drink water." },
-                    { id: "e4", word: "Bread", trans: "Chleb", phonetic: "/bred/", example: "Fresh bread is delicious." },
-                    { id: "e5", word: "Friend", trans: "Przyjaciel", phonetic: "/frend/", example: "He is my best friend." },
-                    { id: "e6", word: "Cat", trans: "Kot", phonetic: "/kæt/", example: "The cat is sleeping." }
-                ],
-                a2: [
-                    { id: "e20", word: "Airport", trans: "Lotnisko", phonetic: "/ˈeəpɔːt/", example: "We arrived at the airport." },
-                    { id: "e21", word: "Expensive", trans: "Drogi", phonetic: "/ɪkˈspensɪv/", example: "This watch is too expensive." },
-                    { id: "e22", word: "Schedule", trans: "Harmonogram", phonetic: "/ˈʃedjuːl/", example: "Check the train schedule." }
-                ],
-                b1: [
-                    { id: "e40", word: "Accomplish", trans: "Osiągnąć", phonetic: "/əˈkʌmplɪʃ/", example: "You can accomplish anything." },
-                    { id: "e41", word: "Inevitable", trans: "Nieunikniony", phonetic: "/ɪnˈevɪtəbl/", example: "Change is inevitable." }
-                ]
-            },
-            vi: {
-                a1: [
-                    { id: "v1", word: "Xin chào", trans: "Cześć / Dzień dobry", phonetic: "[sin chow]", example: "Xin chào bạn!" },
-                    { id: "v2", word: "Cảm ơn", trans: "Dziękuję", phonetic: "[kam uhn]", example: "Cảm ơn nhiều." },
-                    { id: "v3", word: "Nước", trans: "Woda", phonetic: "[nu-uhk]", example: "Cho tôi xin nước." },
-                    { id: "v4", word: "Ngon", trans: "Smaczne", phonetic: "[ngon]", example: "Món này rất ngon!" },
-                    { id: "v5", word: "Tạm biệt", trans: "Do widzenia", phonetic: "[tam byet]", example: "Tạm biệt nhé!" }
-                ],
-                a2: [
-                    { id: "v20", word: "Tính tiền", trans: "Proszę o rachunek", phonetic: "[tinh tyen]", example: "Em ơi, tính tiền!" },
-                    { id: "v21", word: "Bao nhiêu", trans: "Ile to kosztuje", phonetic: "[bao nyew]", example: "Cái này bao nhiêu tiền?" }
-                ],
-                b1: [
-                    { id: "v40", word: "Thành công", trans: "Sukces", phonetic: "[thanh kong]", example: "Chúc bạn thành công!" }
-                ]
-            }
-        };
+    <!-- EKRAN MENU -->
+    <div id="screen-menu">
+        <h2 style="margin-bottom: 6px;">Wybierz tryb nauki</h2>
+        <p style="color: var(--text-sub); font-size: 0.9rem;">Powtarzaj słówka tak długo, aż opanujesz wszystkie!</p>
+        
+        <div class="mode-grid">
+            <div class="mode-card" onclick="app.startMode('flashcards')">🎴 Fiszki</div>
+            <div class="mode-card" onclick="app.startMode('quiz')">❓ Quiz</div>
+            <div class="mode-card" onclick="app.startMode('typing')">✍️ Wpisz Słówko</div>
+            <div class="mode-card" onclick="app.startMode('dictation')">🎧 Dyktando</div>
+            <div class="mode-card" style="grid-column: span 2;" onclick="app.startMode('matching')">🧩 Łączenie Par</div>
+        </div>
+    </div>
 
-        class LanguageApp {
-            constructor() {
-                this.state = {
-                    lang: 'en',
-                    level: 'a1',
-                    xp: 0,
-                    streak: 0,
-                    lastStudyDate: null,
-                    progress: { en: {}, vi: {} } // ID słówka -> poziom opanowania (0 to 3)
-                };
+    <!-- EKRAN TRENINGU -->
+    <div id="screen-trainer" class="hidden">
+        <div class="progress-box">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-sub);">
+                <span>Postęp lekcji</span>
+                <span id="queue-count">Pozostało: 0</span>
+            </div>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        </div>
 
-                this.session = {
-                    queue: [],
-                    currentIndex: 0,
-                    matchingSelected: null,
-                    matchedPairs: 0
-                };
+        <!-- TRYB: FISZKI -->
+        <div id="view-flashcards" class="hidden">
+            <div class="flashcard-box" id="fc-box" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="fc-front" id="fc-word">Word</div>
+                    <div class="fc-back" id="fc-trans">Tłumaczenie</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-danger" onclick="app.handleAnswer(false)">Do powtórki ✕</button>
+                <button class="btn btn-success" onclick="app.handleAnswer(true)">Umiem ✓</button>
+            </div>
+        </div>
 
-                this.loadUserData();
-                this.checkStreak();
-                this.updateUI();
-            }
+        <!-- TRYB: QUIZ -->
+        <div id="view-quiz" class="hidden">
+            <h3 id="quiz-word" style="font-size: 1.8rem; text-align: center; margin: 20px 0;">Word</h3>
+            <div class="options-grid" id="quiz-options"></div>
+        </div>
 
-            saveUserData() {
-                localStorage.setItem('polyglot_v3_data', JSON.stringify(this.state));
-            }
+        <!-- TRYB: WPISYWANIE -->
+        <div id="view-typing" class="hidden">
+            <h3 id="typing-prompt" style="font-size: 1.5rem; text-align: center; margin-top: 10px;">Polski</h3>
+            <input type="text" id="typing-input" class="input-field" placeholder="Wpisz po angielsku..." autocomplete="off">
+            <div id="typing-feedback" class="feedback"></div>
+            <button class="btn" style="margin-top: 12px;" onclick="app.checkTyping()">Sprawdź</button>
+        </div>
 
-            loadUserData() {
-                const saved = localStorage.getItem('polyglot_v3_data');
-                if (saved) {
-                    try {
-                        const parsed = JSON.parse(saved);
-                        this.state = { ...this.state, ...parsed };
-                    } catch(e) { console.error("Error loading saved data", e); }
-                }
-            }
+        <!-- TRYB: DYKTANDO -->
+        <div id="view-dictation" class="hidden">
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn btn-outline" style="width: auto; padding: 12px 24px;" onclick="app.speakCurrent()">🔊 Odtwórz dźwięk</button>
+            </div>
+            <input type="text" id="dictation-input" class="input-field" placeholder="Wpisz ze słuchu..." autocomplete="off">
+            <div id="dictation-feedback" class="feedback"></div>
+            <button class="btn" style="margin-top: 12px;" onclick="app.checkDictation()">Sprawdź</button>
+        </div>
 
-            checkStreak() {
-                const today = new Date().toDateString();
-                if (this.state.lastStudyDate) {
-                    const lastDate = new Date(this.state.lastStudyDate);
-                    const diffDays = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-                    if (diffDays > 1) {
-                        this.state.streak = 0; // Przerwany streak
-                    }
-                }
-            }
+        <!-- TRYB: ŁĄCZENIE PAR -->
+        <div id="view-matching" class="hidden">
+            <div class="match-grid" id="matching-box"></div>
+        </div>
+    </div>
 
-            registerActivity() {
-                const today = new Date().toDateString();
-                if (this.state.lastStudyDate !== today) {
-                    this.state.streak += 1;
-                    this.state.lastStudyDate = today;
-                }
-                this.saveUserData();
-            }
+    <!-- EKRAN SUKCESU -->
+    <div id="screen-summary" class="hidden" style="text-align: center; padding: 20px 0;">
+        <div style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
+        <h2>Świetnie! Zestaw zaliczony!</h2>
+        <p style="color: var(--text-sub); margin: 10px 0 20px 0;">Wszystkie słówka zostały poprawnie opanowane.</p>
+        <button class="btn" onclick="app.showMenu()">Wróć do menu</button>
+    </div>
+</div>
 
-            showStep(stepId) {
-                ['step-lang', 'step-level', 'step-dash', 'step-lesson', 'step-summary'].forEach(s => {
-                    document.getElementById(s).classList.add('hidden');
-                });
-                document.getElementById(stepId).classList.remove('hidden');
-                this.updateUI();
-            }
+<script>
+    // Baza słówek do nauki
+    const WORD_SET = [
+        { id: 1, word: "Apple", trans: "Jabłko" },
+        { id: 2, word: "House", trans: "Dom" },
+        { id: 3, word: "Dog", trans: "Pies" },
+        { id: 4, word: "Book", trans: "Książka" },
+        { id: 5, word: "Water", trans: "Woda" }
+    ];
 
-            setLanguage(lang) {
-                this.state.lang = lang;
-                this.saveUserData();
-                this.showStep('step-level');
-            }
+    class StudyGoApp {
+        constructor() {
+            this.mode = '';
+            this.queue = [];
+            this.initialSize = 0;
+            this.selectedMatch = null;
+            this.matchedCount = 0;
+        }
 
-            switchLanguage(lang) {
-                this.state.lang = lang;
-                this.saveUserData();
-                this.updateUI();
-            }
+        showMenu() {
+            this.toggleScreens('screen-menu');
+            document.getElementById('exit-btn').classList.add('hidden');
+        }
 
-            setLevel(level) {
-                this.state.level = level;
-                this.saveUserData();
-                this.showStep('step-dash');
-            }
+        startMode(selectedMode) {
+            this.mode = selectedMode;
+            // Główna mechanika StudyGo: Kopia bazy, która zmniejsza się tylko przy dobrych odpowiedziach
+            this.queue = [...WORD_SET].sort(() => Math.random() - 0.5);
+            this.initialSize = this.queue.length;
 
-            // OBLICZANIE POSTĘPU METODĄ SRS (Spaced Repetition)
-            getLanguageStats(lang) {
-                let totalWords = 0;
-                let masterPoints = 0;
+            document.getElementById('exit-btn').classList.remove('hidden');
+            this.toggleScreens('screen-trainer');
+            this.nextQuestion();
+        }
 
-                Object.keys(DATABASE[lang]).forEach(lvl => {
-                    DATABASE[lang][lvl].forEach(item => {
-                        totalWords++;
-                        const score = this.state.progress[lang][item.id] || 0;
-                        masterPoints += Math.min(score, 3); // Max 3 punkty na słówko
-                    });
-                });
+        toggleScreens(screenId) {
+            ['screen-menu', 'screen-trainer', 'screen-summary'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
 
-                const maxPoints = totalWords * 3;
-                const percentage = maxPoints > 0 ? Math.round((masterPoints / maxPoints) * 100) : 0;
-                const masteredCount = Object.values(this.state.progress[lang] || {}).filter(score => score >= 3).length;
+        updateProgress() {
+            const remaining = this.queue.length;
+            const done = this.initialSize - remaining;
+            const pct = (done / this.initialSize) * 100;
 
-                return { percentage, totalWords, masteredCount };
+            document.getElementById('progress-fill').style.width = `${pct}%`;
+            document.getElementById('queue-count').innerText = `Pozostało: ${remaining}`;
+        }
+
+        nextQuestion() {
+            if (this.queue.length === 0 && this.mode !== 'matching') {
+                this.toggleScreens('screen-summary');
+                return;
             }
 
-            updateUI() {
-                document.getElementById('user-xp').innerText = this.state.xp;
-                document.getElementById('user-streak').innerText = this.state.streak;
+            this.updateProgress();
 
-                // Angielski
-                const enStats = this.getLanguageStats('en');
-                document.getElementById('en-pct-text').innerText = `${enStats.percentage}%`;
-                document.getElementById('en-pct-bar').style.width = `${enStats.percentage}%`;
-                document.getElementById('en-count-text').innerText = `${enStats.masteredCount} / ${enStats.totalWords} opanowanych słów`;
+            // Ukryj wszystkie widoki
+            ['flashcards', 'quiz', 'typing', 'dictation', 'matching'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+            });
 
-                // Wietnamski
-                const viStats = this.getLanguageStats('vi');
-                document.getElementById('vi-pct-text').innerText = `${viStats.percentage}%`;
-                document.getElementById('vi-pct-bar').style.width = `${viStats.percentage}%`;
-                document.getElementById('vi-count-text').innerText = `${viStats.masteredCount} / ${viStats.totalWords} opanowanych słów`;
+            document.getElementById(`view-${this.mode}`).classList.remove('hidden');
 
-                document.getElementById('current-lang-name').innerText = this.state.lang === 'en' ? 'Angielski' : 'Wietnamski';
-            }
+            const current = this.queue[0];
 
-            startSession() {
-                const pool = DATABASE[this.state.lang][this.state.level] || [];
-                if (pool.length === 0) {
-                    alert("Brak słówek w bazie dla tego poziomu!");
-                    return;
-                }
-
-                // Wymieszaj kolejność
-                this.session.queue = [...pool].sort(() => Math.random() - 0.5);
-                this.session.currentIndex = 0;
-
-                this.showStep('step-lesson');
-                this.renderCurrentQuestion();
-            }
-
-            renderCurrentQuestion() {
-                const current = this.session.queue[this.session.currentIndex];
-                const total = this.session.queue.length;
-                const progressPct = (this.session.currentIndex / total) * 100;
-                document.getElementById('lesson-progress').style.width = `${progressPct}%`;
-
-                // Ukryj wszystkie sekcje
-                ['mode-flashcard', 'mode-quiz', 'mode-typing', 'mode-matching'].forEach(m => {
-                    document.getElementById(m).classList.add('hidden');
-                });
-
-                // Zresetuj fiszkę 3D
-                document.getElementById('fc-wrapper').classList.remove('flipped');
-
-                // Wybór trybu na podstawie indeksu Pętli Lekcji
-                const modeIndex = this.session.currentIndex % 4;
-
-                if (modeIndex === 0) {
-                    this.renderFlashcard(current);
-                } else if (modeIndex === 1) {
-                    this.renderQuiz(current);
-                } else if (modeIndex === 2) {
-                    this.renderTyping(current);
-                } else {
-                    this.renderMatching();
-                }
-            }
-
-            /* --- TRYB 1: FISZKA --- */
-            renderFlashcard(item) {
-                document.getElementById('lesson-type-tag').innerText = "Fiszka 3D";
-                document.getElementById('mode-flashcard').classList.remove('hidden');
-                document.getElementById('fc-word').innerText = item.word;
-                document.getElementById('fc-phonetic').innerText = item.phonetic;
-                document.getElementById('fc-example').innerText = `"${item.example}"`;
-                document.getElementById('fc-trans').innerText = item.trans;
-            }
-
-            flipCard() {
-                document.getElementById('fc-wrapper').classList.toggle('flipped');
-            }
-
-            answerFlashcard(remembered) {
-                const current = this.session.queue[this.session.currentIndex];
-                if (remembered) {
-                    this.updateWordScore(current.id, 1);
-                    this.state.xp += 5;
-                } else {
-                    this.updateWordScore(current.id, -1);
-                    // Dodaj z powrotem na koniec kolejki lekcji
-                    this.session.queue.push(current);
-                }
-                this.advanceLesson();
-            }
-
-            /* --- TRYB 2: QUIZ --- */
-            renderQuiz(item) {
-                document.getElementById('lesson-type-tag').innerText = "Quiz Wyboru";
-                document.getElementById('mode-quiz').classList.remove('hidden');
-                document.getElementById('quiz-target-word').innerText = item.word;
-                document.getElementById('quiz-next-btn').classList.add('hidden');
-
-                const pool = DATABASE[this.state.lang][this.state.level];
-                let options = [item.trans];
-
-                while (options.length < 4 && options.length < pool.length) {
-                    let randTrans = pool[Math.floor(Math.random() * pool.length)].trans;
-                    if (!options.includes(randTrans)) options.push(randTrans);
-                }
-
-                options.sort(() => Math.random() - 0.5);
-
-                const container = document.getElementById('quiz-options-box');
-                container.innerHTML = '';
-
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerText = opt;
-                    btn.onclick = (e) => this.checkQuizAnswer(opt, item.trans, e.target);
-                    container.appendChild(btn);
-                });
-            }
-
-            checkQuizAnswer(selected, correct, btnElement) {
-                const current = this.session.queue[this.session.currentIndex];
-                const allBtns = document.querySelectorAll('.option-btn');
-                allBtns.forEach(b => b.disabled = true);
-
-                if (selected === correct) {
-                    btnElement.classList.add('correct');
-                    this.updateWordScore(current.id, 1);
-                    this.state.xp += 10;
-                } else {
-                    btnElement.classList.add('wrong');
-                    this.updateWordScore(current.id, -1);
-                    this.session.queue.push(current); // Powtórz w tej sesji
-                    allBtns.forEach(b => {
-                        if (b.innerText === correct) b.classList.add('correct');
-                    });
-                }
-                document.getElementById('quiz-next-btn').classList.remove('hidden');
-            }
-
-            /* --- TRYB 3: PISANIE --- */
-            renderTyping(item) {
-                document.getElementById('lesson-type-tag').innerText = "Pisanie z Pamięci";
-                document.getElementById('mode-typing').classList.remove('hidden');
-                document.getElementById('type-prompt-word').innerText = item.trans;
-
-                const input = document.getElementById('type-input');
+            if (this.mode === 'flashcards') {
+                document.getElementById('fc-box').classList.remove('flipped');
+                document.getElementById('fc-word').innerText = current.word;
+                document.getElementById('fc-trans').innerText = current.trans;
+            } 
+            else if (this.mode === 'quiz') {
+                this.renderQuiz(current);
+            } 
+            else if (this.mode === 'typing') {
+                document.getElementById('typing-prompt').innerText = current.trans;
+                const input = document.getElementById('typing-input');
                 input.value = '';
                 input.disabled = false;
-                document.getElementById('type-feedback').innerText = '';
+                document.getElementById('typing-feedback').innerText = '';
+                input.focus();
+            } 
+            else if (this.mode === 'dictation') {
+                const input = document.getElementById('dictation-input');
+                input.value = '';
+                input.disabled = false;
+                document.getElementById('dictation-feedback').innerText = '';
+                this.speakCurrent();
+                input.focus();
             }
-
-            checkTypingAnswer() {
-                const current = this.session.queue[this.session.currentIndex];
-                const inputEl = document.getElementById('type-input');
-                const userVal = inputEl.value.trim().toLowerCase();
-                const correctVal = current.word.toLowerCase();
-                const feedback = document.getElementById('type-feedback');
-
-                inputEl.disabled = true;
-
-                if (userVal === correctVal) {
-                    feedback.style.color = "var(--secondary)";
-                    feedback.innerText = "✨ Doskonale!";
-                    this.updateWordScore(current.id, 1);
-                    this.state.xp += 15;
-                    setTimeout(() => this.advanceLesson(), 1000);
-                } else {
-                    feedback.style.color = "var(--danger)";
-                    feedback.innerText = `Poprawna odpowiedź: "${current.word}"`;
-                    this.updateWordScore(current.id, -1);
-                    this.session.queue.push(current); // Powtórz
-                    setTimeout(() => this.advanceLesson(), 2200);
-                }
+            else if (this.mode === 'matching') {
+                this.renderMatching();
             }
+        }
 
-            /* --- TRYB 4: ŁĄCZENIE PAR --- */
-            renderMatching() {
-                document.getElementById('lesson-type-tag').innerText = "Dopasuj Pary";
-                document.getElementById('mode-matching').classList.remove('hidden');
-
-                const pool = DATABASE[this.state.lang][this.state.level];
-                const items = [...pool].sort(() => Math.random() - 0.5).slice(0, 3); // 3 pary
-
-                let cards = [];
-                items.forEach(item => {
-                    cards.push({ id: item.id, text: item.word, type: 'word' });
-                    cards.push({ id: item.id, text: item.trans, type: 'trans' });
-                });
-
-                cards.sort(() => Math.random() - 0.5);
-
-                const container = document.getElementById('matching-box');
-                container.innerHTML = '';
-                this.session.matchingSelected = null;
-                this.session.matchedPairs = 0;
-
-                cards.forEach(c => {
-                    const cardEl = document.createElement('div');
-                    cardEl.className = 'match-card';
-                    cardEl.innerText = c.text;
-                    cardEl.onclick = () => this.handleMatchClick(cardEl, c, items.length);
-                    container.appendChild(cardEl);
-                });
+        // OBSŁUGA MECHANIKI POWTÓREK (MECHANIKA WRTS/STUDYGO)
+        handleAnswer(isCorrect) {
+            const current = this.queue.shift(); // Usuń z początku
+            
+            if (!isCorrect) {
+                // JEŚLI BŁĄD: dodaj słówko na koniec kolejki (musi wrócić!)
+                this.queue.push(current);
             }
+            this.nextQuestion();
+        }
 
-            handleMatchClick(cardEl, data, totalPairs) {
-                if (cardEl.classList.contains('matched') || cardEl.classList.contains('selected')) return;
+        /* --- TRYB 2: QUIZ --- */
+        renderQuiz(current) {
+            document.getElementById('quiz-word').innerText = current.word;
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
 
-                if (!this.session.matchingSelected) {
-                    this.session.matchingSelected = { cardEl, data };
-                    cardEl.classList.add('selected');
-                } else {
-                    const prev = this.session.matchingSelected;
+            let options = [current.trans];
+            while (options.length < 4 && options.length < WORD_SET.length) {
+                let rand = WORD_SET[Math.floor(Math.random() * WORD_SET.length)].trans;
+                if (!options.includes(rand)) options.push(rand);
+            }
+            options.sort(() => Math.random() - 0.5);
 
-                    if (prev.data.id === data.id && prev.data.type !== data.type) {
-                        // Poprawna para
-                        cardEl.classList.remove('selected');
-                        cardEl.classList.add('matched');
-                        prev.cardEl.classList.remove('selected');
-                        prev.cardEl.classList.add('matched');
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    const isCorrect = (opt === current.trans);
+                    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+                    setTimeout(() => this.handleAnswer(isCorrect), 800);
+                };
+                container.appendChild(btn);
+            });
+        }
 
-                        this.session.matchedPairs++;
-                        this.state.xp += 5;
+        /* --- TRYB 3: WPISYWANIE --- */
+        checkTyping() {
+            const current = this.queue[0];
+            const input = document.getElementById('typing-input');
+            const feedback = document.getElementById('typing-feedback');
+            const isCorrect = input.value.trim().toLowerCase() === current.word.toLowerCase();
 
-                        if (this.session.matchedPairs === totalPairs) {
-                            setTimeout(() => this.advanceLesson(), 800);
-                        }
-                    } else {
-                        // Błędna para
-                        cardEl.classList.add('selected');
-                        setTimeout(() => {
-                            cardEl.classList.remove('selected');
-                            prev.cardEl.classList.remove('selected');
-                        }, 500);
+            input.disabled = true;
+            if (isCorrect) {
+                feedback.style.color = "var(--secondary)";
+                feedback.innerText = "✓ Dobrze!";
+            } else {
+                feedback.style.color = "var(--danger)";
+                feedback.innerText = `✕ Błąd! Poprawnie: ${current.word}`;
+            }
+            setTimeout(() => this.handleAnswer(isCorrect), 1200);
+        }
+
+        /* --- TRYB 4: DYKTANDO --- */
+        speakCurrent() {
+            if (!this.queue[0]) return;
+            const utterance = new SpeechSynthesisUtterance(this.queue[0].word);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        checkDictation() {
+            const current = this.queue[0];
+            const input = document.getElementById('dictation-input');
+            const feedback = document.getElementById('dictation-feedback');
+            const isCorrect = input.value.trim().toLowerCase() === current.word.toLowerCase();
+
+            input.disabled = true;
+            if (isCorrect) {
+                feedback.style.color = "var(--secondary)";
+                feedback.innerText = "✓ Dobrze!";
+            } else {
+                feedback.style.color = "var(--danger)";
+                feedback.innerText = `✕ Poprawnie: ${current.word}`;
+            }
+            setTimeout(() => this.handleAnswer(isCorrect), 1200);
+        }
+
+        /* --- TRYB 5: ŁĄCZENIE PAR --- */
+        renderMatching() {
+            const container = document.getElementById('matching-box');
+            container.innerHTML = '';
+            this.selectedMatch = null;
+            this.matchedCount = 0;
+
+            let cards = [];
+            WORD_SET.forEach(item => {
+                cards.push({ id: item.id, text: item.word, type: 'word' });
+                cards.push({ id: item.id, text: item.trans, type: 'trans' });
+            });
+            cards.sort(() => Math.random() - 0.5);
+
+            cards.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerText = c.text;
+                card.onclick = () => this.handleMatchClick(card, c);
+                container.appendChild(card);
+            });
+        }
+
+        handleMatchClick(cardEl, data) {
+            if (cardEl.classList.contains('matched') || cardEl.classList.contains('selected')) return;
+
+            if (!this.selectedMatch) {
+                this.selectedMatch = { cardEl, data };
+                cardEl.classList.add('selected');
+            } else {
+                const prev = this.selectedMatch;
+                if (prev.data.id === data.id && prev.data.type !== data.type) {
+                    cardEl.classList.add('matched');
+                    prev.cardEl.classList.add('matched');
+                    this.matchedCount++;
+                    if (this.matchedCount === WORD_SET.length) {
+                        setTimeout(() => this.toggleScreens('screen-summary'), 600);
                     }
-                    this.session.matchingSelected = null;
-                }
-            }
-
-            /* --- ZARZĄDZANIE WYNIKAMI I POSTĘPEM --- */
-            updateWordScore(wordId, delta) {
-                const lang = this.state.lang;
-                if (!this.state.progress[lang]) this.state.progress[lang] = {};
-
-                let currentScore = this.state.progress[lang][wordId] || 0;
-                currentScore = Math.max(0, currentScore + delta);
-                this.state.progress[lang][wordId] = currentScore;
-            }
-
-            advanceLesson() {
-                this.session.currentIndex++;
-
-                if (this.session.currentIndex >= this.session.queue.length) {
-                    this.finishLesson();
                 } else {
-                    this.renderCurrentQuestion();
+                    cardEl.classList.add('selected');
+                    setTimeout(() => {
+                        cardEl.classList.remove('selected');
+                        prev.cardEl.classList.remove('selected');
+                    }, 400);
                 }
-            }
-
-            finishLesson() {
-                this.registerActivity();
-                this.saveUserData();
-                document.getElementById('summary-xp').innerText = `+${this.session.queue.length * 10} XP`;
-                this.showStep('step-summary');
-            }
-
-            exitLesson() {
-                if (confirm("Czy na pewno chcesz przerwać obecną lekcję?")) {
-                    this.showStep('step-dash');
-                }
-            }
-
-            speakCurrentWord() {
-                const current = this.session.queue[this.session.currentIndex];
-                if (!current) return;
-                const utterance = new SpeechSynthesisUtterance(current.word);
-                utterance.lang = this.state.lang === 'en' ? 'en-US' : 'vi-VN';
-                window.speechSynthesis.speak(utterance);
+                this.selectedMatch = null;
             }
         }
+    }
 
-        const app = new LanguageApp();
-        if (app.state.lang && app.state.level) {
-            app.showStep('step-dash');
-        }
-    </script>
+    const app = new StudyGoApp();
+</script>
 </body>
 </html>
