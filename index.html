@@ -3,29 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nauka Wietnamskiego i Angielskiego</title>
+    <title>Akademia Językowa - Wietnamski & Angielski</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #0f172a;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
         }
 
         .container {
-            max-width: 800px;
             width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
         }
 
         header {
@@ -33,62 +43,122 @@
             margin-bottom: 30px;
         }
 
+        header h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+
         .card {
-            background: var(--card);
-            padding: 24px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .btn-choice {
+            background-color: #334155;
+            color: white;
+            border: 2px solid transparent;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-align: center;
         }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        .btn-choice:hover {
+            border-color: var(--primary);
+            background-color: #475569;
+            transform: translateY(-2px);
         }
 
-        button {
-            background: var(--primary);
+        .btn-primary {
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            margin-top: 20px;
+            transition: background 0.2s;
         }
 
-        button:hover {
-            opacity: 0.9;
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
+        /* Lekcje */
+        .lesson-item {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        th, td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+        .lesson-word {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
         }
 
-        th {
-            background-color: #f1f5f9;
+        .lesson-trans {
+            color: var(--text-sub);
         }
 
+        /* Quiz */
         .quiz-option {
-            display: block;
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
             width: 100%;
             text-align: left;
-            background: #f1f5f9;
-            color: var(--text);
-            margin: 8px 0;
-            padding: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .quiz-option:hover {
+            background-color: #475569;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            color: white;
         }
     </style>
 </head>
@@ -97,137 +167,207 @@
 <div class="container">
     <header>
         <h1>Nauka Języków</h1>
-        <p>Wietnamski i Angielski z tłumaczeniem na Polski</p>
+        <p>Wybierz język, określ swój poziom i zacznij naukę!</p>
     </header>
 
-    <div class="tabs">
-        <button onclick="showTab('dictionary')">Słownik</button>
-        <button onclick="showTab('quiz')">Test</button>
+    <!-- KROK 1: Wybór języka -->
+    <div id="step-language" class="card">
+        <h2>Krok 1: Jakiego języka chcesz się uczyć?</h2>
+        <div class="grid">
+            <button class="btn-choice" onclick="selectLanguage('en')">
+                🇬🇧 Angielski
+            </button>
+            <button class="btn-choice" onclick="selectLanguage('vi')">
+                🇻🇳 Wietnamski
+            </button>
+        </div>
     </div>
 
-    <!-- TAB 1: SŁOWNIK -->
-    <div id="dictionary" class="card">
-        <h2>Baza słówek</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Polski</th>
-                    <th>Wietnamski (Tiếng Việt)</th>
-                    <th>Angielski (English)</th>
-                </tr>
-            </thead>
-            <tbody id="dict-table">
-                <!-- Wypełniane przez JavaScript -->
-            </tbody>
-        </table>
+    <!-- KROK 2: Wybór poziomu -->
+    <div id="step-level" class="card hidden">
+        <button class="back-btn" onclick="goToStep('step-language')">← Zmień język</button>
+        <h2>Krok 2: Jaki jest Twój poziom zaawansowania?</h2>
+        <div class="grid">
+            <button class="btn-choice" onclick="selectLevel('easy')">
+                🌱 Nic nie umiem<br><small style="font-size:0.8rem; font-weight:normal;">Podstawowe słówka</small>
+            </button>
+            <button class="btn-choice" onclick="selectLevel('medium')">
+                🌿 Umiem średnio<br><small style="font-size:0.8rem; font-weight:normal;">Proste zdania</small>
+            </button>
+            <button class="btn-choice" onclick="selectLevel('hard')">
+                🌳 Umiem dobrze<br><small style="font-size:0.8rem; font-weight:normal;">Trudniejsze zwroty</small>
+            </button>
+        </div>
     </div>
 
-    <!-- TAB 2: QUIZ -->
-    <div id="quiz" class="card hidden">
-        <h2>Sprawdź wiedzę</h2>
-        <div id="quiz-container">
-            <p id="quiz-question" style="font-size: 1.2em; font-weight: bold;"></p>
+    <!-- KROK 3: Panel nauki i Quiz -->
+    <div id="step-learning" class="card hidden">
+        <button class="back-btn" onclick="goToStep('step-level')">← Zmień poziom</button>
+        <h2 id="learning-title">Lekcja</h2>
+        <p id="learning-subtitle" style="color: var(--text-sub); margin-bottom: 20px;"></p>
+
+        <!-- Lista słówek -->
+        <div id="lessons-list"></div>
+
+        <hr style="border-color: #334155; margin: 30px 0;">
+
+        <!-- Sekcja Quizu -->
+        <h3>Test wiedzy</h3>
+        <div id="quiz-container" style="margin-top: 15px;">
+            <p id="quiz-question" style="font-size: 1.1rem; margin-bottom: 10px;"></p>
             <div id="quiz-options"></div>
-            <p id="quiz-result"></p>
-            <button id="next-btn" onclick="loadNextQuestion()" class="hidden">Następne pytanie</button>
+            <p id="quiz-result" style="margin-top: 15px; font-weight: bold;"></p>
+            <button id="next-quiz-btn" class="btn-primary hidden" onclick="generateQuizQuestion()">Następne pytanie</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Baza słówek
-    const vocabulary = [
-        { pl: "Dzień dobry", vi: "Xin chào", en: "Hello" },
-        { pl: "Dziękuję", vi: "Cảm ơn", en: "Thank you" },
-        { pl: "Przepraszam", vi: "Xin lỗi", en: "Sorry / Excuse me" },
-        { pl: "Do widzenia", vi: "Tạm biệt", en: "Goodbye" },
-        { pl: "Tak", vi: "Vâng / Có", en: "Yes" },
-        { pl: "Nie", vi: "Không", en: "No" },
-        { pl: "Woda", vi: "Nước", en: "Water" },
-        { pl: "Jedzenie", vi: "Thức ăn", en: "Food" }
-    ];
-
-    // Tabela słownika
-    function renderDictionary() {
-        const tbody = document.getElementById("dict-table");
-        tbody.innerHTML = "";
-        vocabulary.forEach(item => {
-            const row = `<tr>
-                <td><strong>${item.pl}</strong></td>
-                <td>${item.vi}</td>
-                <td>${item.en}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-    }
-
-    // Nawigacja zakładkami
-    function showTab(tabId) {
-        document.getElementById("dictionary").classList.add("hidden");
-        document.getElementById("quiz").classList.add("hidden");
-        document.getElementById(tabId).classList.remove("hidden");
-        
-        if (tabId === 'quiz') {
-            loadNextQuestion();
+    // Baza danych słówek i zdań
+    const data = {
+        en: {
+            name: "Angielski",
+            easy: [
+                { word: "Hello", trans: "Cześć / Dzień dobry" },
+                { word: "Thank you", trans: "Dziękuję" },
+                { word: "Water", trans: "Woda" },
+                { word: "Yes / No", trans: "Tak / Nie" },
+                { word: "Goodbye", trans: "Do widzenia" }
+            ],
+            medium: [
+                { word: "How are you?", trans: "Jak się masz?" },
+                { word: "Where is the bus stop?", trans: "Gdzie jest przystanek autobusowy?" },
+                { word: "I would like a coffee", trans: "Chciałbym kawę" },
+                { word: "How much does this cost?", trans: "Ile to kosztuje?" }
+            ],
+            hard: [
+                { word: "Could you please repeat that?", trans: "Czy mógłbyś to powtórzyć?" },
+                { word: "I have been learning English for a year", trans: "Uczę się angielskiego od roku" },
+                { word: "In my opinion, this is important", trans: "Moim zdaniem to jest ważne" }
+            ]
+        },
+        vi: {
+            name: "Wietnamski",
+            easy: [
+                { word: "Xin chào", trans: "Cześć / Dzień dobry" },
+                { word: "Cảm ơn", trans: "Dziękuję" },
+                { word: "Nước", trans: "Woda" },
+                { word: "Vâng / Không", trans: "Tak / Nie" },
+                { word: "Tạm biệt", trans: "Do widzenia" }
+            ],
+            medium: [
+                { word: "Bạn khỏe không?", trans: "Jak się masz?" },
+                { word: "Bao nhiêu tiền?", trans: "Ile to kosztuje?" },
+                { word: "Tôi muốn ăn...", trans: "Chcę zjeść..." },
+                { word: "Cái này là gì?", trans: "Co to jest?" }
+            ],
+            hard: [
+                { word: "Tôi đang học tiếng Việt", trans: "Uczę się języka wietnamskiego" },
+                { word: "Cho tôi hỏi đường đến...", trans: "Przepraszam, jak dojść do..." },
+                { word: "Rất vui được gặp bạn", trans: "Bardzo miło Cię poznać" }
+            ]
         }
+    };
+
+    let selectedLang = '';
+    let selectedLvl = '';
+    let currentQuizCorrectAnswer = '';
+
+    function selectLanguage(lang) {
+        selectedLang = lang;
+        goToStep('step-level');
     }
 
-    // Logika Quizu
-    let currentQuestion = null;
+    function selectLevel(level) {
+        selectedLvl = level;
+        goToStep('step-learning');
+        loadLearningContent();
+    }
 
-    function loadNextQuestion() {
-        document.getElementById("quiz-result").innerText = "";
-        document.getElementById("next-btn").classList.add("hidden");
+    function goToStep(stepId) {
+        document.getElementById('step-language').classList.add('hidden');
+        document.getElementById('step-level').classList.add('hidden');
+        document.getElementById('step-learning').classList.add('hidden');
+
+        document.getElementById(stepId).classList.remove('hidden');
+    }
+
+    function loadLearningContent() {
+        const langData = data[selectedLang];
+        const contentList = langData[selectedLvl];
+
+        const levelNames = { easy: "Początkujący", medium: "Średniozaawansowany", hard: "Zaawansowany" };
+
+        document.getElementById('learning-title').innerText = `Język ${langData.name} - ${levelNames[selectedLvl]}`;
+        document.getElementById('learning-subtitle').innerText = "Przeanalizuj poniższe słowa, a następnie przejdź do testu.";
+
+        // Wypełnianie listy słówek
+        const listContainer = document.getElementById('lessons-list');
+        listContainer.innerHTML = '';
+
+        contentList.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'lesson-item';
+            div.innerHTML = `
+                <span class="lesson-word">${item.word}</span>
+                <span class="lesson-trans">${item.trans}</span>
+            `;
+            listContainer.appendChild(div);
+        });
+
+        // Ładowanie pierwszego pytania w quizie
+        generateQuizQuestion();
+    }
+
+    function generateQuizQuestion() {
+        document.getElementById('quiz-result').innerText = '';
+        document.getElementById('next-quiz-btn').classList.add('hidden');
+
+        const contentList = data[selectedLang][selectedLvl];
+        const randomItem = contentList[Math.floor(Math.random() * contentList.length)];
+
+        currentQuizCorrectAnswer = randomItem.trans;
+
+        document.getElementById('quiz-question').innerText = `Co oznacza słowo: "${randomItem.word}"?`;
+
+        // Przygotowanie opcji
+        let options = [randomItem.trans];
         
-        const randomIndex = Math.floor(Math.random() * vocabulary.length);
-        currentQuestion = vocabulary[randomIndex];
-        
-        // Losujemy czy pytamy z wietnamskiego czy angielskiego
-        const isVietnamese = Math.random() > 0.5;
-        const sourceLang = isVietnamese ? "vi" : "en";
-        const langName = isVietnamese ? "wietnamskim" : "angielskim";
-
-        document.getElementById("quiz-question").innerText = 
-            `Co oznacza po polsku słowo w języku ${langName}: "${currentQuestion[sourceLang]}"?`;
-
-        // Przygotowanie opcji odpowiedzi
-        let options = [currentQuestion.pl];
-        while (options.length < 3) {
-            let randomPl = vocabulary[Math.floor(Math.random() * vocabulary.length)].pl;
-            if (!options.includes(randomPl)) {
-                options.push(randomPl);
+        // Pobieranie losowych błędnych odpowiedzi
+        const allItems = [...data[selectedLang].easy, ...data[selectedLang].medium, ...data[selectedLang].hard];
+        while (options.length < 3 && options.length < allItems.length) {
+            let randomTrans = allItems[Math.floor(Math.random() * allItems.length)].trans;
+            if (!options.includes(randomTrans)) {
+                options.push(randomTrans);
             }
         }
-        
+
         // Mieszanie opcji
         options.sort(() => Math.random() - 0.5);
 
-        const optionsContainer = document.getElementById("quiz-options");
-        optionsContainer.innerHTML = "";
-        
+        const optionsContainer = document.getElementById('quiz-options');
+        optionsContainer.innerHTML = '';
+
         options.forEach(option => {
-            const btn = document.createElement("button");
-            btn.className = "quiz-option";
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
             btn.innerText = option;
-            btn.onclick = () => checkAnswer(option);
+            btn.onclick = () => checkQuizAnswer(option);
             optionsContainer.appendChild(btn);
         });
     }
 
-    function checkAnswer(selected) {
-        const resultElement = document.getElementById("quiz-result");
-        if (selected === currentQuestion.pl) {
-            resultElement.innerText = "Dobrze! Gratulacje!";
-            resultElement.style.color = "green";
+    function checkQuizAnswer(selected) {
+        const resultText = document.getElementById('quiz-result');
+        if (selected === currentQuizCorrectAnswer) {
+            resultText.innerText = "Świetnie! Poprawna odpowiedź!";
+            resultText.style.color = "#10b981";
         } else {
-            resultElement.innerText = `Źle! Prawidłowa odpowiedź to: ${currentQuestion.pl}`;
-            resultElement.style.color = "red";
+            resultText.innerText = `Niestety nie. Prawidłowa odpowiedź to: ${currentQuizCorrectAnswer}`;
+            resultText.style.color = "#ef4444";
         }
-        document.getElementById("next-btn").classList.remove("hidden");
+        document.getElementById('next-quiz-btn').classList.remove('hidden');
     }
-
-    // Inicjalizacja
-    renderDictionary();
 </script>
 
 </body>
