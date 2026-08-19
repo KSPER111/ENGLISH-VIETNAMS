@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nauka Wietnamskiego i Angielskiego</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f1f5f9;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #f1f5f9;
+            color: var(--text);
+            margin: 8px 0;
+            padding: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Nauka Języków</h1>
+        <p>Wietnamski i Angielski z tłumaczeniem na Polski</p>
+    </header>
+
+    <div class="tabs">
+        <button onclick="showTab('dictionary')">Słownik</button>
+        <button onclick="showTab('quiz')">Test</button>
+    </div>
+
+    <!-- TAB 1: SŁOWNIK -->
+    <div id="dictionary" class="card">
+        <h2>Baza słówek</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Polski</th>
+                    <th>Wietnamski (Tiếng Việt)</th>
+                    <th>Angielski (English)</th>
+                </tr>
+            </thead>
+            <tbody id="dict-table">
+                <!-- Wypełniane przez JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 2: QUIZ -->
+    <div id="quiz" class="card hidden">
+        <h2>Sprawdź wiedzę</h2>
+        <div id="quiz-container">
+            <p id="quiz-question" style="font-size: 1.2em; font-weight: bold;"></p>
+            <div id="quiz-options"></div>
+            <p id="quiz-result"></p>
+            <button id="next-btn" onclick="loadNextQuestion()" class="hidden">Następne pytanie</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Baza słówek
+    const vocabulary = [
+        { pl: "Dzień dobry", vi: "Xin chào", en: "Hello" },
+        { pl: "Dziękuję", vi: "Cảm ơn", en: "Thank you" },
+        { pl: "Przepraszam", vi: "Xin lỗi", en: "Sorry / Excuse me" },
+        { pl: "Do widzenia", vi: "Tạm biệt", en: "Goodbye" },
+        { pl: "Tak", vi: "Vâng / Có", en: "Yes" },
+        { pl: "Nie", vi: "Không", en: "No" },
+        { pl: "Woda", vi: "Nước", en: "Water" },
+        { pl: "Jedzenie", vi: "Thức ăn", en: "Food" }
+    ];
+
+    // Tabela słownika
+    function renderDictionary() {
+        const tbody = document.getElementById("dict-table");
+        tbody.innerHTML = "";
+        vocabulary.forEach(item => {
+            const row = `<tr>
+                <td><strong>${item.pl}</strong></td>
+                <td>${item.vi}</td>
+                <td>${item.en}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // Nawigacja zakładkami
+    function showTab(tabId) {
+        document.getElementById("dictionary").classList.add("hidden");
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById(tabId).classList.remove("hidden");
+        
+        if (tabId === 'quiz') {
+            loadNextQuestion();
+        }
+    }
+
+    // Logika Quizu
+    let currentQuestion = null;
+
+    function loadNextQuestion() {
+        document.getElementById("quiz-result").innerText = "";
+        document.getElementById("next-btn").classList.add("hidden");
+        
+        const randomIndex = Math.floor(Math.random() * vocabulary.length);
+        currentQuestion = vocabulary[randomIndex];
+        
+        // Losujemy czy pytamy z wietnamskiego czy angielskiego
+        const isVietnamese = Math.random() > 0.5;
+        const sourceLang = isVietnamese ? "vi" : "en";
+        const langName = isVietnamese ? "wietnamskim" : "angielskim";
+
+        document.getElementById("quiz-question").innerText = 
+            `Co oznacza po polsku słowo w języku ${langName}: "${currentQuestion[sourceLang]}"?`;
+
+        // Przygotowanie opcji odpowiedzi
+        let options = [currentQuestion.pl];
+        while (options.length < 3) {
+            let randomPl = vocabulary[Math.floor(Math.random() * vocabulary.length)].pl;
+            if (!options.includes(randomPl)) {
+                options.push(randomPl);
+            }
+        }
+        
+        // Mieszanie opcji
+        options.sort(() => Math.random() - 0.5);
+
+        const optionsContainer = document.getElementById("quiz-options");
+        optionsContainer.innerHTML = "";
+        
+        options.forEach(option => {
+            const btn = document.createElement("button");
+            btn.className = "quiz-option";
+            btn.innerText = option;
+            btn.onclick = () => checkAnswer(option);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected) {
+        const resultElement = document.getElementById("quiz-result");
+        if (selected === currentQuestion.pl) {
+            resultElement.innerText = "Dobrze! Gratulacje!";
+            resultElement.style.color = "green";
+        } else {
+            resultElement.innerText = `Źle! Prawidłowa odpowiedź to: ${currentQuestion.pl}`;
+            resultElement.style.color = "red";
+        }
+        document.getElementById("next-btn").classList.remove("hidden");
+    }
+
+    // Inicjalizacja
+    renderDictionary();
+</script>
+
+</body>
+</html>
