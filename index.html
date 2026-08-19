@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyGo Clone - Nauka Słówek</title>
+    <title>StudyGo - Język Wietnamski</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #e11d48; /* Wietnamska czerwień */
+            --primary-hover: #be123c;
             --secondary: #10b981;
+            --accent: #f59e0b;
             --danger: #ef4444;
             --bg: #0f172a;
             --card-bg: #1e293b;
@@ -27,12 +28,12 @@
 
         /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 1.2rem; font-weight: 800; color: #818cf8; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
         
         /* Progress */
         .progress-box { margin-bottom: 20px; }
         .progress-bar { width: 100%; height: 10px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-top: 8px; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.3s ease; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.3s ease; }
 
         /* Buttons & Inputs */
         .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; width: 100%; font-size: 1rem; }
@@ -51,11 +52,11 @@
         .mode-card:hover { border-color: var(--primary); }
 
         /* Flashcard 3D */
-        .flashcard-box { perspective: 1000px; height: 200px; margin: 20px 0; cursor: pointer; }
+        .flashcard-box { perspective: 1000px; height: 220px; margin: 20px 0; cursor: pointer; }
         .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flashcard-box.flipped .flashcard-inner { transform: rotateY(180deg); }
-        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); border: 2px solid var(--border); background: var(--bg); display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 800; padding: 20px; }
-        .fc-back { transform: rotateY(180deg); color: var(--secondary); border-color: var(--primary); }
+        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); border: 2px solid var(--border); background: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 800; padding: 20px; }
+        .fc-back { transform: rotateY(180deg); color: #34d399; border-color: var(--primary); }
 
         /* Quiz Grid */
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
@@ -66,7 +67,7 @@
         /* Matching Grid */
         .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
         .match-card { background: var(--bg); border: 2px solid var(--border); padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer; }
-        .match-card.selected { border-color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
+        .match-card.selected { border-color: var(--accent); background: rgba(245, 158, 11, 0.15); }
         .match-card.matched { border-color: var(--secondary); opacity: 0.3; pointer-events: none; }
 
         .feedback { margin-top: 12px; font-weight: 700; text-align: center; }
@@ -76,19 +77,19 @@
 
 <div class="app-container">
     <div class="header">
-        <div class="logo">⚡ StudyGo Master</div>
+        <div class="logo">🇻🇳 StudyGo Wietnamski</div>
         <button id="exit-btn" class="btn btn-outline hidden" style="width: auto; padding: 6px 12px;" onclick="app.showMenu()">Menu</button>
     </div>
 
     <!-- EKRAN MENU -->
     <div id="screen-menu">
-        <h2 style="margin-bottom: 6px;">Wybierz tryb nauki</h2>
-        <p style="color: var(--text-sub); font-size: 0.9rem;">Powtarzaj słówka tak długo, aż opanujesz wszystkie!</p>
+        <h2 style="margin-bottom: 6px;">Nauka Wietnamskiego</h2>
+        <p style="color: var(--text-sub); font-size: 0.9rem;">Przetłumacz wietnamskie słówka na język polski.</p>
         
         <div class="mode-grid">
             <div class="mode-card" onclick="app.startMode('flashcards')">🎴 Fiszki</div>
             <div class="mode-card" onclick="app.startMode('quiz')">❓ Quiz</div>
-            <div class="mode-card" onclick="app.startMode('typing')">✍️ Wpisz Słówko</div>
+            <div class="mode-card" onclick="app.startMode('typing')">✍️ Wpisz po Polsku</div>
             <div class="mode-card" onclick="app.startMode('dictation')">🎧 Dyktando</div>
             <div class="mode-card" style="grid-column: span 2;" onclick="app.startMode('matching')">🧩 Łączenie Par</div>
         </div>
@@ -108,11 +109,18 @@
         <div id="view-flashcards" class="hidden">
             <div class="flashcard-box" id="fc-box" onclick="this.classList.toggle('flipped')">
                 <div class="flashcard-inner">
-                    <div class="fc-front" id="fc-word">Word</div>
-                    <div class="fc-back" id="fc-trans">Tłumaczenie</div>
+                    <div class="fc-front">
+                        <div id="fc-word">Word</div>
+                        <div style="font-size: 0.9rem; font-weight: 400; color: var(--text-sub); margin-top: 8px;">(Słówko wietnamskie)</div>
+                    </div>
+                    <div class="fc-back">
+                        <div id="fc-trans">Tłumaczenie</div>
+                        <div style="font-size: 0.9rem; font-weight: 400; color: var(--text-sub); margin-top: 8px;">(Po polsku)</div>
+                    </div>
                 </div>
             </div>
             <div style="display: flex; gap: 10px;">
+                <button class="btn btn-outline" style="width: 30%;" onclick="app.speakCurrent()">🔊</button>
                 <button class="btn btn-danger" onclick="app.handleAnswer(false)">Do powtórki ✕</button>
                 <button class="btn btn-success" onclick="app.handleAnswer(true)">Umiem ✓</button>
             </div>
@@ -120,30 +128,37 @@
 
         <!-- TRYB: QUIZ -->
         <div id="view-quiz" class="hidden">
-            <h3 id="quiz-word" style="font-size: 1.8rem; text-align: center; margin: 20px 0;">Word</h3>
+            <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem;">Przetłumacz na polski:</p>
+            <h3 id="quiz-word" style="font-size: 2rem; text-align: center; margin: 12px 0 20px 0; color: #fbbf24;">Word</h3>
             <div class="options-grid" id="quiz-options"></div>
         </div>
 
         <!-- TRYB: WPISYWANIE -->
         <div id="view-typing" class="hidden">
-            <h3 id="typing-prompt" style="font-size: 1.5rem; text-align: center; margin-top: 10px;">Polski</h3>
-            <input type="text" id="typing-input" class="input-field" placeholder="Wpisz po angielsku..." autocomplete="off">
+            <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem;">Wpisz znaczenie po polsku:</p>
+            <h3 id="typing-prompt" style="font-size: 2rem; text-align: center; margin-top: 8px; color: #fbbf24;">Słówko</h3>
+            <input type="text" id="typing-input" class="input-field" placeholder="Wpisz po polsku..." autocomplete="off">
             <div id="typing-feedback" class="feedback"></div>
-            <button class="btn" style="margin-top: 12px;" onclick="app.checkTyping()">Sprawdź</button>
+            <div style="display: flex; gap: 10px; margin-top: 12px;">
+                <button class="btn btn-outline" style="width: 25%;" onclick="app.speakCurrent()">🔊</button>
+                <button class="btn" style="flex: 1;" onclick="app.checkTyping()">Sprawdź</button>
+            </div>
         </div>
 
         <!-- TRYB: DYKTANDO -->
         <div id="view-dictation" class="hidden">
+            <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem;">Odsłuchaj słówko wietnamskie i wpisz tłumaczenie po polsku:</p>
             <div style="text-align: center; margin: 20px 0;">
-                <button class="btn btn-outline" style="width: auto; padding: 12px 24px;" onclick="app.speakCurrent()">🔊 Odtwórz dźwięk</button>
+                <button class="btn btn-outline" style="width: auto; padding: 12px 24px;" onclick="app.speakCurrent()">🔊 Odtwórz wymowę</button>
             </div>
-            <input type="text" id="dictation-input" class="input-field" placeholder="Wpisz ze słuchu..." autocomplete="off">
+            <input type="text" id="dictation-input" class="input-field" placeholder="Wpisz znaczenie po polsku..." autocomplete="off">
             <div id="dictation-feedback" class="feedback"></div>
             <button class="btn" style="margin-top: 12px;" onclick="app.checkDictation()">Sprawdź</button>
         </div>
 
         <!-- TRYB: ŁĄCZENIE PAR -->
         <div id="view-matching" class="hidden">
+            <p style="text-align: center; color: var(--text-sub); font-size: 0.9rem;">Połącz wietnamskie słowa z polskimi odpowiednikami:</p>
             <div class="match-grid" id="matching-box"></div>
         </div>
     </div>
@@ -151,20 +166,21 @@
     <!-- EKRAN SUKCESU -->
     <div id="screen-summary" class="hidden" style="text-align: center; padding: 20px 0;">
         <div style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
-        <h2>Świetnie! Zestaw zaliczony!</h2>
-        <p style="color: var(--text-sub); margin: 10px 0 20px 0;">Wszystkie słówka zostały poprawnie opanowane.</p>
+        <h2>Chúc mừng! Zestaw zaliczony!</h2>
+        <p style="color: var(--text-sub); margin: 10px 0 20px 0;">Opanowałeś wszystkie wietnamskie słówka z tego zestawu.</p>
         <button class="btn" onclick="app.showMenu()">Wróć do menu</button>
     </div>
 </div>
 
 <script>
-    // Baza słówek do nauki
+    // BAZA SŁÓWEK WIETNAMSKICH
     const WORD_SET = [
-        { id: 1, word: "Apple", trans: "Jabłko" },
-        { id: 2, word: "House", trans: "Dom" },
-        { id: 3, word: "Dog", trans: "Pies" },
-        { id: 4, word: "Book", trans: "Książka" },
-        { id: 5, word: "Water", trans: "Woda" }
+        { id: 1, word: "Xin chào", trans: "Cześć" },
+        { id: 2, word: "Cảm ơn", trans: "Dziękuję" },
+        { id: 3, word: "Nước", trans: "Woda" },
+        { id: 4, word: "Phở", trans: "Zupa Pho" },
+        { id: 5, word: "Ngon", trans: "Smaczne" },
+        { id: 6, word: "Tạm biệt", trans: "Do widzenia" }
     ];
 
     class StudyGoApp {
@@ -183,7 +199,7 @@
 
         startMode(selectedMode) {
             this.mode = selectedMode;
-            // Główna mechanika StudyGo: Kopia bazy, która zmniejsza się tylko przy dobrych odpowiedziach
+            // Mechanika StudyGo: Kopia bazy słówek do kolejki powtórek
             this.queue = [...WORD_SET].sort(() => Math.random() - 0.5);
             this.initialSize = this.queue.length;
 
@@ -216,7 +232,6 @@
 
             this.updateProgress();
 
-            // Ukryj wszystkie widoki
             ['flashcards', 'quiz', 'typing', 'dictation', 'matching'].forEach(v => {
                 document.getElementById(`view-${v}`).classList.add('hidden');
             });
@@ -234,7 +249,7 @@
                 this.renderQuiz(current);
             } 
             else if (this.mode === 'typing') {
-                document.getElementById('typing-prompt').innerText = current.trans;
+                document.getElementById('typing-prompt').innerText = current.word;
                 const input = document.getElementById('typing-input');
                 input.value = '';
                 input.disabled = false;
@@ -254,18 +269,17 @@
             }
         }
 
-        // OBSŁUGA MECHANIKI POWTÓREK (MECHANIKA WRTS/STUDYGO)
+        // MECHANIKA STUDYGO (Słówko po błędzie powraca na koniec kolejki)
         handleAnswer(isCorrect) {
-            const current = this.queue.shift(); // Usuń z początku
+            const current = this.queue.shift();
             
             if (!isCorrect) {
-                // JEŚLI BŁĄD: dodaj słówko na koniec kolejki (musi wrócić!)
-                this.queue.push(current);
+                this.queue.push(current); // Wracamy do błędu
             }
             this.nextQuestion();
         }
 
-        /* --- TRYB 2: QUIZ --- */
+        /* --- QUIZ --- */
         renderQuiz(current) {
             document.getElementById('quiz-word').innerText = current.word;
             const container = document.getElementById('quiz-options');
@@ -291,29 +305,34 @@
             });
         }
 
-        /* --- TRYB 3: WPISYWANIE --- */
+        /* --- WPISYWANIE PO POLSKU --- */
         checkTyping() {
             const current = this.queue[0];
             const input = document.getElementById('typing-input');
             const feedback = document.getElementById('typing-feedback');
-            const isCorrect = input.value.trim().toLowerCase() === current.word.toLowerCase();
+            
+            // Porównywanie tekstu z ignorowaniem wielkości liter
+            const userVal = input.value.trim().toLowerCase();
+            const correctVal = current.trans.toLowerCase();
 
+            const isCorrect = (userVal === correctVal);
             input.disabled = true;
+
             if (isCorrect) {
                 feedback.style.color = "var(--secondary)";
                 feedback.innerText = "✓ Dobrze!";
             } else {
                 feedback.style.color = "var(--danger)";
-                feedback.innerText = `✕ Błąd! Poprawnie: ${current.word}`;
+                feedback.innerText = `✕ Błąd! Poprawnie: ${current.trans}`;
             }
             setTimeout(() => this.handleAnswer(isCorrect), 1200);
         }
 
-        /* --- TRYB 4: DYKTANDO --- */
+        /* --- DYKTANDO (Syntezator Wietnamski) --- */
         speakCurrent() {
             if (!this.queue[0]) return;
             const utterance = new SpeechSynthesisUtterance(this.queue[0].word);
-            utterance.lang = 'en-US';
+            utterance.lang = 'vi-VN'; // Kod języka wietnamskiego
             window.speechSynthesis.speak(utterance);
         }
 
@@ -321,20 +340,24 @@
             const current = this.queue[0];
             const input = document.getElementById('dictation-input');
             const feedback = document.getElementById('dictation-feedback');
-            const isCorrect = input.value.trim().toLowerCase() === current.word.toLowerCase();
+            
+            const userVal = input.value.trim().toLowerCase();
+            const correctVal = current.trans.toLowerCase();
 
+            const isCorrect = (userVal === correctVal);
             input.disabled = true;
+
             if (isCorrect) {
                 feedback.style.color = "var(--secondary)";
                 feedback.innerText = "✓ Dobrze!";
             } else {
                 feedback.style.color = "var(--danger)";
-                feedback.innerText = `✕ Poprawnie: ${current.word}`;
+                feedback.innerText = `✕ Znaczenie: ${current.trans} (${current.word})`;
             }
             setTimeout(() => this.handleAnswer(isCorrect), 1200);
         }
 
-        /* --- TRYB 5: ŁĄCZENIE PAR --- */
+        /* --- ŁĄCZENIE PAR --- */
         renderMatching() {
             const container = document.getElementById('matching-box');
             container.innerHTML = '';
